@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
             currentState = PlayerState.MovingRight;
             lastDirection = 1;
         }
-        else if (isGrounded && !isDashing)
+        else if (!isDashing)
         {
             currentState = PlayerState.Idle;
         }
@@ -83,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isDashing)
         {
+            
             switch (currentState)
             {
                 case PlayerState.MovingLeft:
@@ -94,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
                     break;
 
                 case PlayerState.Jumping:
-                    rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
+                    rb.velocity = new Vector2(movementSpeed, jumpHeight);
                     isGrounded = false;
                     currentState = PlayerState.Idle; // Reset state after jump impulse
                     break;
