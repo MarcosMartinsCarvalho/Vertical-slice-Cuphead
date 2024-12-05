@@ -1,70 +1,85 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Platform : MonoBehaviour
+public class PlatformBehavior : MonoBehaviour
 {
-    [SerializeField] private float speed = 5f; // Speed of movement
-    [SerializeField] private float timeA = 1f; // Minimum time to move up
-    [SerializeField] private float timeB = 3f; // Maximum time to move up
-    [SerializeField] private float deathSpeed = 2f; // Speed of movement when dying
-    [SerializeField] private float despawnTime = 2f; // Time before the platform despawns
+    public float sinkSpeed = 1f; 
+    public float resetSpeed = 1f; 
+    public float sinkDelay = 1f; 
+    public Transform groundCheck; 
+    public LayerMask playerLayer; 
+    public float groundCheckRadius = 0.5f;
 
-    private bool isMoving = true;
+    private Vector3 initialPosition; 
+    private bool isSinking = false; 
+    private bool isReturning = false; 
 
     void Start()
     {
-        // Get a random time between timeA and timeB
-        float moveTime = Random.Range(timeA, timeB);
-        StartCoroutine(MoveUpForTime(moveTime));
+        initialPosition = transform.position;
     }
 
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.X))
-        {
-            Die();
-        }
-
-        if (isMoving)
-        {
-            // Move the object straight up
-            transform.Translate(Vector2.up * speed * Time.deltaTime);
-        }
+        CheckPlayerOnPlatform();
     }
 
-    private IEnumerator MoveUpForTime(float duration)
+    void CheckPlayerOnPlatform()
     {
-        yield return new WaitForSeconds(duration);
-        isMoving = false; // Stop moving after the duration
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("EnemyBullet"))
+        bool playerOnPlatform = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, playerLayer);
+
+        if (playerOnPlatform && !isSinking && !isReturning)
         {
-            Die();
+            StartCoroutine(SinkPlatform());
         }
     }
 
-    private void Die()
+    IEnumerator SinkPlatform()
     {
-        // Start moving the platform down
-        StartCoroutine(MoveDownAndDespawn());
-    }
+        isSinking = true;
 
-    private IEnumerator MoveDownAndDespawn()
-    {
-        while (true)
+        yield return new WaitForSeconds(sinkDelay);
+
+
+        while (transform.position.y > initialPosition.y - 2f) 
         {
-            // Move the object straight down
-            transform.Translate(Vector2.down * deathSpeed * Time.deltaTime);
+
+            transform.position -= new Vector3(0, sinkSpeed * Time.deltaTime, 0);
             yield return null;
         }
 
-        // Wait for a short time before despawning
-        yield return new WaitForSeconds(despawnTime);
 
-        // Destroy the platform game object
-        Destroy(gameObject);
+
+        yield return new WaitForSeconds(1f);
+
+
+        StartCoroutine(ReturnToInitialPosition());
+    }
+
+    IEnumerator ReturnToInitialPosition()
+    {
+        isReturning = true;
+
+        // Mueve la plataforma hacia la posición inicial
+        while (transform.position.y < initialPosition.y)
+        {
+            Debug.Log("La plataforma está regresando a su posición inicial...");
+            transform.position += new Vector3(0, resetSpeed * Time.deltaTime, 0);
+            yield return null;
+        }
+
+        transform.position = initialPosition;
+        Debug.Log("La plataforma ha regresado a su posición inicial.");
+        isSinking = false;
+        isReturning = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Visualiza el área de detección del jugador
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
 }
