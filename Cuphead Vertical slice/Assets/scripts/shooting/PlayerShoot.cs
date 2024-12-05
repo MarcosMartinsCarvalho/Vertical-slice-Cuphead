@@ -8,11 +8,10 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private Transform bulletSpawnPoint; // Reference to the bullet spawn point
     [SerializeField] private float bulletSpeed = 10f; // Speed of the bullet
     [SerializeField] private float fireRate = 7.5f; // Fire rate in shots per second
+    [SerializeField] private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer
 
     private bool isShooting = false;
 
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && !isShooting) // Check if the fire button is pressed and not already shooting
@@ -36,12 +35,12 @@ public class PlayerShoot : MonoBehaviour
     {
         // Instantiate the bullet at the spawn point
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        /*
-        // Get the Rigidbody component of the bullet and set its velocity
-        Rigidbody rb = bullet.GetComp
-        if (rb != null)
+
+        // Set the bullet's direction based on the SpriteRenderer's flipX property
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        if (bulletScript != null)
         {
-            rb.velocity = bulletSpawnPoint.forward * bulletSpeed;
-        } */
+            bulletScript.SetDirection(spriteRenderer.flipX ? Vector3.left : Vector3.right);
+        }
     }
 }

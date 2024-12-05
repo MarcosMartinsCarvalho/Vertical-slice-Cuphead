@@ -836,6 +836,7 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 831253555}
   bulletSpeed: 10
   fireRate: 7.5
+  spriteRenderer: {fileID: 831253554}
 --- !u!1 &1704477886
 GameObject:
   m_ObjectHideFlags: 0

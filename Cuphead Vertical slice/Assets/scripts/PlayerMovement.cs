@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     public int LastDirection { get; private set; }
 
+
     
     void Update()
     {
