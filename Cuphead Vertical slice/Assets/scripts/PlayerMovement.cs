@@ -27,6 +27,11 @@ public class PlayerMovement : MonoBehaviour
         if (!isDashing)
         {
             HandleInput();
+            gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        }
+        else
+        {
+            gameObject.GetComponent<SpriteRenderer>().enabled = false;
         }
 
         HandleMovement();
