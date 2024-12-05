@@ -123,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(dashLength);
 
         // Stop movement and reset constraints
-        rb.velocity = new Vector2(0, rb.velocity.y); // Keep the current vertical velocity (e.g., gravity effect)
+        rb.velocity = new Vector2(0, rb.velocity.y);
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         isDashing = false;
@@ -151,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Check if the collided object has the tag "Ground"
+        // groundcheck
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
@@ -164,9 +164,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        // If the player leaves a collision with an object tagged as "Ground"
+        // groundcheck
         if (collision.gameObject.CompareTag("Ground"))
         {
+        
             isGrounded = false;
         }
     }
