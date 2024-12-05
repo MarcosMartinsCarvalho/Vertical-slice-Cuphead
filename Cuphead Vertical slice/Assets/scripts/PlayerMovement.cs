@@ -20,10 +20,16 @@ public class PlayerMovement : MonoBehaviour
     private PlayerState currentState = PlayerState.Idle;
 
     private bool isDashing = false;
-    private int lastDirection = 0;
+    public int lastDirection = 0;
 
+    public int LastDirection { get; private set; }
+
+
+    
     void Update()
     {
+        lastDirection = LastDirection;
+
         if (!isDashing)
         {
             HandleInput();
