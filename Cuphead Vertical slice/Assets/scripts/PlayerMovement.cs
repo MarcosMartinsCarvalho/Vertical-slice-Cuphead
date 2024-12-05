@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
     private enum PlayerState { Idle, MovingLeft, MovingRight, Jumping, Dashing }
     private PlayerState currentState = PlayerState.Idle;
-
+    private bool canDash = true;
     private bool isDashing = false;
     private int lastDirection = 0;
 
@@ -101,7 +101,10 @@ public class PlayerMovement : MonoBehaviour
                     break;
 
                 case PlayerState.Dashing:
-                    StartCoroutine(PerformDash());
+                    if (canDash)
+                    {
+                        StartCoroutine(PerformDash());
+                    }
                     break;
 
                 case PlayerState.Idle:
@@ -115,6 +118,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isDashing = true;
         canTakeDamage = false;
+        canDash = false;
 
         // Lock Y axis to prevent falling while dashing
         rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
@@ -139,6 +143,7 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded)
         {
             currentState = PlayerState.Idle;
+            canDash = true;
         }
         else if (Input.GetKey(moveLeft))
         {
@@ -161,6 +166,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+            canDash = true;
             if (!isDashing)
             {
                 currentState = PlayerState.Idle;
