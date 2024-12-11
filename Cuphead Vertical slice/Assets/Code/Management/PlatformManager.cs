@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlatformManager : MonoBehaviour
 {
-    public GameObject platformPrefab; // Prefab de la plataforma
-    public Transform[] fixedPositions; // Posiciones fijas
-    private List<GameObject> activePlatforms = new List<GameObject>(); // Plataformas activas
-    private float cycleTime = 5f; // Tiempo entre ciclos
+    public GameObject platformPrefab;
+    public Transform[] fixedPositions; 
+    private List<GameObject> activePlatforms = new List<GameObject>(); 
+    private float cycleTime = 5f;
 
     void Start()
     {
@@ -17,7 +17,6 @@ public class PlatformManager : MonoBehaviour
 
     void InitializePlatforms()
     {
-        // Activar 4 plataformas al inicio
         for (int i = 0; i < 4; i++)
         {
             SpawnPlatformAtPosition(i);
@@ -36,11 +35,9 @@ public class PlatformManager : MonoBehaviour
         {
             yield return new WaitForSeconds(cycleTime);
 
-            // Selecciona una plataforma aleatoria para desaparecer
             int platformToRemoveIndex = Random.Range(0, activePlatforms.Count);
             GameObject platformToRemove = activePlatforms[platformToRemoveIndex];
 
-            // Encuentra una nueva posición que no esté siendo usada
             List<int> availablePositions = new List<int>();
             for (int i = 0; i < fixedPositions.Length; i++)
             {
@@ -54,11 +51,9 @@ public class PlatformManager : MonoBehaviour
             {
                 int newPositionIndex = availablePositions[Random.Range(0, availablePositions.Count)];
 
-                // Crear nueva plataforma en la nueva posición
                 SpawnPlatformAtPosition(newPositionIndex);
             }
 
-            // Elimina la plataforma vieja
             activePlatforms.RemoveAt(platformToRemoveIndex);
             Destroy(platformToRemove);
         }

@@ -62,23 +62,19 @@ public class PlatformBehavior : MonoBehaviour
     {
         isReturning = true;
 
-        // Mueve la plataforma hacia la posición inicial
         while (transform.position.y < initialPosition.y)
         {
-            Debug.Log("La plataforma está regresando a su posición inicial...");
             transform.position += new Vector3(0, resetSpeed * Time.deltaTime, 0);
             yield return null;
         }
 
         transform.position = initialPosition;
-        Debug.Log("La plataforma ha regresado a su posición inicial.");
         isSinking = false;
         isReturning = false;
     }
 
     private void OnDrawGizmos()
     {
-        // Visualiza el área de detección del jugador
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
