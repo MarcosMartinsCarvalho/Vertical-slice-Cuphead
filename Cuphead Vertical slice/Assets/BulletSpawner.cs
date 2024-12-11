@@ -21,7 +21,7 @@ public class BulletSpawner : MonoBehaviour
         if (cooldown > 3) 
         {
             GameObject newBullet = Instantiate(bullet);
-            newBullet.GetComponent<Bullet>().Target = Target;
+            newBullet.GetComponent<BossBullet>().Target = Target;
             cooldown = 0;
         }
     }
