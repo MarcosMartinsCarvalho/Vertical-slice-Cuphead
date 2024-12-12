@@ -9,7 +9,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashLength = 0.3f; // Duration of the dash in seconds
     [SerializeField] private bool isGrounded = false; // Tracks if the player is on the ground
     [SerializeField] private Rigidbody2D rb; // Player's Rigidbody2D component
-    [SerializeField] private bool canTakeDamage = true; // Determines if the player can take damage
+    public Transform groundCheck; // Punto donde se revisa si está en el suelo
+    public LayerMask groundLayer; // Capas que cuentan como "suelo"
+    public float groundCheckRadius = 0.2f; // Radio del OverlapCircle
+    private PlayerHealth playerHealth;
 
     [SerializeField] private KeyCode moveLeft = KeyCode.A; // Key for moving left
     [SerializeField] private KeyCode moveRight = KeyCode.D; // Key for moving right
@@ -20,27 +23,21 @@ public class PlayerMovement : MonoBehaviour
     private PlayerState currentState = PlayerState.Idle;
 
     private bool isDashing = false;
-    public int lastDirection = 0;
+    private int lastDirection = 0;
 
-    public int LastDirection { get; private set; }
-
-
-    
+    private void Start()
+    {
+        playerHealth = GetComponent<PlayerHealth>();
+    }
     void Update()
     {
-        lastDirection = LastDirection;
-
         if (!isDashing)
         {
             HandleInput();
-            gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        }
-        else
-        {
-            gameObject.GetComponent<SpriteRenderer>().enabled = false;
         }
 
         HandleMovement();
+        CheckGround();
     }
 
     private void HandleInput()
@@ -85,6 +82,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void CheckGround()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+    }
+
     private void HandleMovement()
     {
         if (!isDashing)
@@ -119,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator PerformDash()
     {
         isDashing = true;
-        canTakeDamage = false;
+        playerHealth.isInvincible = false;
 
         // Lock Y axis to prevent falling while dashing
         rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
@@ -138,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         isDashing = false;
-        canTakeDamage = true;
+        playerHealth.isInvincible = true;
 
         
         if (isGrounded)
@@ -158,11 +160,15 @@ public class PlayerMovement : MonoBehaviour
             currentState = PlayerState.Idle;
         }
     }
-
-
+    
+    
+ 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Check if the collided object has the tag "Ground"
+        if (collision.gameObject.CompareTag("Ground") && !playerHealth.isInvincible)
+        {
+            playerHealth.TakeDamage(1);
+        }
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
@@ -172,6 +178,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+
 
     private void OnCollisionExit2D(Collision2D collision)
     {
