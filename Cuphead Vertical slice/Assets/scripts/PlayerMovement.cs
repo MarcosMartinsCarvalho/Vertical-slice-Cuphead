@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     public int LastDirection { get; private set; }
 
 
-    
+
     void Update()
     {
         lastDirection = LastDirection;
@@ -70,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
             currentState = PlayerState.Dashing;
         }
 
-        
+
         switch (lastDirection)
         {
             case -1:
@@ -140,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
         isDashing = false;
         canTakeDamage = true;
 
-        
+
         if (isGrounded)
         {
             currentState = PlayerState.Idle;
