@@ -5,7 +5,7 @@ using UnityEngine;
 public class bossMove : MonoBehaviour
 {
     private float x = 1;
-    private float xpos = 6.5f;
+    private float xPos = 6.5f;
     private float y;
     // Start is called before the first frame update
     void Start()
@@ -19,6 +19,6 @@ public class bossMove : MonoBehaviour
         x += Time.deltaTime;
         y = Mathf.Sin(x);
 
-        transform.position = new Vector3(xpos, y, 0);
+        transform.position = new Vector3(xPos, y, 0);
     }
 }

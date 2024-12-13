@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BulletSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject Target;
-    [SerializeField] GameObject bullet;
+    [SerializeField] private GameObject target;
+    [SerializeField] private GameObject bullet;
     public float cooldown;
     void Start()
     {
@@ -21,7 +21,7 @@ public class BulletSpawner : MonoBehaviour
         if (cooldown > 3) 
         {
             GameObject newBullet = Instantiate(bullet);
-            newBullet.GetComponent<BossBullet>().Target = Target;
+            newBullet.GetComponent<BossBullet>().Target = target;
             cooldown = 0;
         }
     }

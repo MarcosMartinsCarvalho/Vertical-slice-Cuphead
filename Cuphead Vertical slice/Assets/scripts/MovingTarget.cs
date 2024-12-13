@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class movingtarget : MonoBehaviour
+public class MovingTarget : MonoBehaviour
 {
     private float x = 1;
     private float xpos = 6.5f;
