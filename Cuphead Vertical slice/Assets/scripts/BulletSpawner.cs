@@ -13,7 +13,7 @@ public class BulletSpawner : MonoBehaviour
         
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         cooldown +=  Time.deltaTime;

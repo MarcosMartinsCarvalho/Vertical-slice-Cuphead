@@ -3,22 +3,21 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float movementSpeed = 5f; // Speed of player movement
-    [SerializeField] private float jumpHeight = 5f; // Height of player jump
-    [SerializeField] private float dashSpeed = 15f; // Speed of the dash
-    [SerializeField] private float dashLength = 0.3f; // Duration of the dash in seconds
-    [SerializeField] private bool isGrounded = false; // Tracks if the player is on the ground
-    [SerializeField] private Rigidbody2D rb; // Player's Rigidbody2D component
-    public Transform groundCheck; // Punto donde se revisa si está en el suelo
-    public LayerMask groundLayer; // Capas que cuentan como "suelo"
-    public float groundCheckRadius = 0.2f; // Radio del OverlapCircle
+    [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] private float jumpHeight = 5f; 
+    [SerializeField] private float dashSpeed = 15f; 
+    [SerializeField] private float dashLength = 0.3f; 
+    [SerializeField] private bool isGrounded = false;
+    [SerializeField] private Rigidbody2D rb;
+    public Transform groundCheck; 
+    public LayerMask groundLayer; 
+    public float groundCheckRadius = 0.2f; 
     private PlayerHealth playerHealth;
 
-    [SerializeField] private KeyCode moveLeft = KeyCode.A; // Key for moving left
-    [SerializeField] private KeyCode moveRight = KeyCode.D; // Key for moving right
-    [SerializeField] private KeyCode jumpKey = KeyCode.Space; // Key for jumping
-    [SerializeField] private KeyCode dashKey = KeyCode.LeftShift; // Key for dashing
-
+    [SerializeField] private KeyCode moveLeft = KeyCode.A; 
+    [SerializeField] private KeyCode moveRight = KeyCode.D;
+    [SerializeField] private KeyCode jumpKey = KeyCode.Space; 
+    [SerializeField] private KeyCode dashKey = KeyCode.LeftShift; 
     private enum PlayerState { Idle, MovingLeft, MovingRight, Jumping, Dashing }
     private PlayerState currentState = PlayerState.Idle;
 
@@ -71,12 +70,12 @@ public class PlayerMovement : MonoBehaviour
         switch (lastDirection)
         {
             case -1:
-                // Flip the sprite renderer horizontally
+       
                 GetComponent<SpriteRenderer>().flipX = true;
                 break;
 
             case 1:
-                // Flip the sprite renderer horizontally
+               
                 GetComponent<SpriteRenderer>().flipX = false;
                 break;
         }
@@ -104,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
                 case PlayerState.Jumping:
                     rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
                     isGrounded = false;
-                    currentState = PlayerState.Idle; // Reset state after jump impulse
+                    currentState = PlayerState.Idle; 
                     break;
 
                 case PlayerState.Dashing:
@@ -123,10 +122,9 @@ public class PlayerMovement : MonoBehaviour
         isDashing = true;
         playerHealth.isInvincible = false;
 
-        // Lock Y axis to prevent falling while dashing
+        
         rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
 
-        // Lock movement and determine dash direction using the last direction
         float dashDirection = lastDirection;
         if (dashDirection != 0)
         {
@@ -135,8 +133,7 @@ public class PlayerMovement : MonoBehaviour
 
         yield return new WaitForSeconds(dashLength);
 
-        // Stop movement and reset constraints
-        rb.velocity = new Vector2(0, rb.velocity.y); // Keep the current vertical velocity (e.g., gravity effect)
+        rb.velocity = new Vector2(0, rb.velocity.y); 
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         isDashing = false;
@@ -182,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        // If the player leaves a collision with an object tagged as "Ground"
+        
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = false;
