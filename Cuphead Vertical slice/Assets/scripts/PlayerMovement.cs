@@ -3,40 +3,38 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float movementSpeed = 5f;
-    [SerializeField] private float jumpHeight = 5f; 
-    [SerializeField] private float dashSpeed = 15f; 
-    [SerializeField] private float dashLength = 0.3f; 
-    [SerializeField] private bool isGrounded = false;
-    [SerializeField] private Rigidbody2D rb;
-    public Transform groundCheck; 
-    public LayerMask groundLayer; 
-    public float groundCheckRadius = 0.2f; 
-    private PlayerHealth playerHealth;
+    [SerializeField] private float movementSpeed = 5f; // Speed of player movement
+    [SerializeField] private float jumpHeight = 5f; // Height of player jump
+    [SerializeField] private float dashSpeed = 15f; // Speed of the dash
+    [SerializeField] private float dashLength = 0.3f; // Duration of the dash in seconds
+    [SerializeField] private bool isGrounded = false; // Tracks if the player is on the ground
+    [SerializeField] private Rigidbody2D rb; // Player's Rigidbody2D component
+    [SerializeField] private bool canTakeDamage = true; // Determines if the player can take damage
 
-    [SerializeField] private KeyCode moveLeft = KeyCode.A; 
-    [SerializeField] private KeyCode moveRight = KeyCode.D;
-    [SerializeField] private KeyCode jumpKey = KeyCode.Space; 
-    [SerializeField] private KeyCode dashKey = KeyCode.LeftShift; 
+    [SerializeField] private KeyCode moveLeft = KeyCode.A; // Key for moving left
+    [SerializeField] private KeyCode moveRight = KeyCode.D; // Key for moving right
+    [SerializeField] private KeyCode jumpKey = KeyCode.Space; // Key for jumping
+    [SerializeField] private KeyCode dashKey = KeyCode.LeftShift; // Key for dashing
+
     private enum PlayerState { Idle, MovingLeft, MovingRight, Jumping, Dashing }
     private PlayerState currentState = PlayerState.Idle;
 
     private bool isDashing = false;
     private int lastDirection = 0;
 
-    private void Start()
-    {
-        playerHealth = GetComponent<PlayerHealth>();
-    }
     void Update()
     {
         if (!isDashing)
         {
             HandleInput();
+            gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        }
+        else
+        {
+            gameObject.GetComponent<SpriteRenderer>().enabled = false;
         }
 
         HandleMovement();
-        CheckGround();
     }
 
     private void HandleInput()
@@ -66,24 +64,19 @@ public class PlayerMovement : MonoBehaviour
             currentState = PlayerState.Dashing;
         }
 
-        
+
         switch (lastDirection)
         {
             case -1:
-       
+                // Flip the sprite renderer horizontally
                 GetComponent<SpriteRenderer>().flipX = true;
                 break;
 
             case 1:
-               
+                // Flip the sprite renderer horizontally
                 GetComponent<SpriteRenderer>().flipX = false;
                 break;
         }
-    }
-
-    void CheckGround()
-    {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
     private void HandleMovement()
@@ -103,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
                 case PlayerState.Jumping:
                     rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
                     isGrounded = false;
-                    currentState = PlayerState.Idle; 
+                    currentState = PlayerState.Idle; // Reset state after jump impulse
                     break;
 
                 case PlayerState.Dashing:
@@ -120,11 +113,12 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator PerformDash()
     {
         isDashing = true;
-        playerHealth.isInvincible = false;
+        canTakeDamage = false;
 
-        
+        // Lock Y axis to prevent falling while dashing
         rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
 
+        // Lock movement and determine dash direction using the last direction
         float dashDirection = lastDirection;
         if (dashDirection != 0)
         {
@@ -138,9 +132,9 @@ public class PlayerMovement : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         isDashing = false;
-        playerHealth.isInvincible = true;
+        canTakeDamage = true;
 
-        
+
         if (isGrounded)
         {
             currentState = PlayerState.Idle;
@@ -158,9 +152,8 @@ public class PlayerMovement : MonoBehaviour
             currentState = PlayerState.Idle;
         }
     }
-    
-    
- 
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // groundcheck
@@ -174,13 +167,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
     private void OnCollisionExit2D(Collision2D collision)
     {
         // groundcheck
         if (collision.gameObject.CompareTag("Ground"))
         {
-        
+
             isGrounded = false;
         }
     }
