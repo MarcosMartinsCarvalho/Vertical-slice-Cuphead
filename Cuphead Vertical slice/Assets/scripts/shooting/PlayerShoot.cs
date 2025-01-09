@@ -12,12 +12,21 @@ public class PlayerShoot : MonoBehaviour
 
     private bool isShooting = false;
 
+    private Animator animator; // Reference to the Animator component
+
+
+    void Start()
+    {
+        animator = GetComponent<Animator>(); // Get the Animator component
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && !isShooting)
         {
             StartCoroutine(ShootCoroutine());
         }
+        
     }
 
     IEnumerator ShootCoroutine()
@@ -26,9 +35,11 @@ public class PlayerShoot : MonoBehaviour
         while (Input.GetMouseButton(0)) 
         {
             Shoot();
-            yield return new WaitForSeconds(1f / fireRate); 
+            yield return new WaitForSeconds(1f / fireRate);
+            animator.SetBool("IsShooting", true);
         }
         isShooting = false;
+        animator.SetBool("IsShooting", false);
     }
 
     void Shoot()

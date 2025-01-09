@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -16,11 +17,24 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private KeyCode jumpKey = KeyCode.Space; // Key for jumping
     [SerializeField] private KeyCode dashKey = KeyCode.LeftShift; // Key for dashing
 
+    [SerializeField] private bool IsIdle = false;
+    [SerializeField] private bool IsWalking = false;
+    [SerializeField] private bool IsJumping = false;
+    [SerializeField] private bool IsDashing = false;
+
+    private Animator animator; // Reference to the Animator component
+
+
     private enum PlayerState { Idle, MovingLeft, MovingRight, Jumping, Dashing }
     private PlayerState currentState = PlayerState.Idle;
 
     private bool isDashing = false;
     private int lastDirection = 0;
+
+    void Start()
+    {
+        animator = GetComponent<Animator>(); // Get the Animator component
+    }
 
     void Update()
     {
@@ -39,29 +53,53 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleInput()
     {
+
+
         if (Input.GetKey(moveLeft))
         {
+            animator.SetBool("IsIdle", false);
+
             currentState = PlayerState.MovingLeft;
             lastDirection = -1;
+
+            animator.SetBool("IsWalking", true);
         }
         else if (Input.GetKey(moveRight))
         {
+            animator.SetBool("IsIdle", false);
+
             currentState = PlayerState.MovingRight;
             lastDirection = 1;
+
+            animator.SetBool("IsWalking", true);
         }
         else if (isGrounded && !isDashing)
         {
+            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsDashing", false);
+
             currentState = PlayerState.Idle;
+
+            animator.SetBool("IsIdle", true);
         }
 
         if (Input.GetKeyDown(jumpKey) && isGrounded)
         {
+            animator.SetBool("IsIdle", false);
+
             currentState = PlayerState.Jumping;
+
+            animator.SetBool("IsJumping", true);
         }
 
         if (Input.GetKeyDown(dashKey) && !isDashing)
         {
+            animator.SetBool("IsIdle", false);
+
             currentState = PlayerState.Dashing;
+
+            animator.SetBool("IsDashing", true);
         }
 
 
