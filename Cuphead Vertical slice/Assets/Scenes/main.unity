@@ -601,6 +601,11 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!4 &816490398 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6739278016942653489, guid: 2ed58fcbd3f728745a322c0799664fb6, type: 3}
+  m_PrefabInstance: {fileID: 2025322112}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &831253550
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,12 +647,15 @@ MonoBehaviour:
   dashLength: 0.3
   isGrounded: 0
   rb: {fileID: 831253557}
-  canTakeDamage: 1
+  groundCheck: {fileID: 816490398}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheckRadius: 0.2
   moveLeft: 97
   moveRight: 100
   jumpKey: 32
   dashKey: 304
-  lastDirection: 0
 --- !u!114 &831253552
 MonoBehaviour:
   m_ObjectHideFlags: 0
