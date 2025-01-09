@@ -1,19 +1,19 @@
 Observaties 14:56 tot 19:56
 
 # Observaties
-Speler verward over wat er gebeurd wanneer getal naar 0 gaat. 
-Speler weet niet waarom cijfer omhoog gaat
-Speler had hulp nodig met deur openen
-Speler ziet niet of de game een einde heeft
-Spelers zoeken strategie om goed te stapelen
-Speler krijgt deur niet dicht
-Spelers zijn in staat om de rest van het team te saboteren
-Speler let actief op cijfer van doos om de functie te ontdekken
-Spelers hadden lol met samenwerking en strategeren in de game.
-Geen een speler weet wat de nummers betekenen, en moesten het verteld worden
-Spelers hadden  niet door dat het spel was beëindigd
-Trein controls janky, en moeilijk uit te vogelen, spelers wouden actief niet degene achter het stuur zijn.
-Onduidelijk dat interact en oppakken verschillende knoppen waren
+* Speler vraagt wat er gebeurd wanneer getal naar 0 gaat. 
+* Speler vraagt waarom cijfer omhoog gaat
+* Speler had hulp nodig met deur openen
+* Speler ziet niet of de game een einde heeft
+* Spelers zoeken strategie om goed te stapelen
+* Speler krijgt deur niet dicht
+* Spelers zijn in staat om de rest van het team te saboteren
+* Speler let actief op cijfer van doos om de functie te ontdekken
+* Spelers hadden lol met samenwerking en strategeren in de game.
+* Geen een speler verteld de functies van de nummers, en ze moesten het verteld worden
+* Spelers probeerde nog door te spelen nadat dat het spel was beëindigd
+* Trein controls janky, en moeilijk uit te vogelen, spelers wouden actief niet degene achter het stuur zijn.
+* Onduidelijk dat interact en oppakken verschillende knoppen waren
 
 # Conclusies:
 Bugs en speelbaarheid: de trein zat vast, wat gemaakt moest worden, verder zaten er geen bugs in. Verder waren de spelers prima in staat om hun doelen te bereiken, ook al wisten ze niet altijd wat het doel was.
