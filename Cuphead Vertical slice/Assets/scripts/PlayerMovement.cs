@@ -133,7 +133,8 @@ public class PlayerMovement : MonoBehaviour
 
         yield return new WaitForSeconds(dashLength);
 
-        rb.velocity = new Vector2(0, rb.velocity.y); 
+        // Stop movement and reset constraints
+        rb.velocity = new Vector2(0, rb.velocity.y);
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         isDashing = false;
@@ -162,10 +163,7 @@ public class PlayerMovement : MonoBehaviour
  
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground") && !playerHealth.isInvincible)
-        {
-            playerHealth.TakeDamage(1);
-        }
+        // groundcheck
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
@@ -179,9 +177,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        
+        // groundcheck
         if (collision.gameObject.CompareTag("Ground"))
         {
+        
             isGrounded = false;
         }
     }
