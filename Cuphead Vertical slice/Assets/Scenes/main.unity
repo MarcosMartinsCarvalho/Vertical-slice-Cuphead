@@ -565,12 +565,13 @@ GameObject:
   m_Component:
   - component: {fileID: 831253555}
   - component: {fileID: 831253554}
-  - component: {fileID: 831253553}
   - component: {fileID: 831253552}
   - component: {fileID: 831253551}
+  - component: {fileID: 831253559}
+  - component: {fileID: 831253558}
+  - component: {fileID: 831253553}
   - component: {fileID: 831253557}
   - component: {fileID: 831253556}
-  - component: {fileID: 831253558}
   m_Layer: 0
   m_Name: player
   m_TagString: Untagged
@@ -601,7 +602,6 @@ MonoBehaviour:
   moveRight: 100
   jumpKey: 32
   dashKey: 304
-  lastDirection: 0
 --- !u!114 &831253552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -792,6 +792,22 @@ MonoBehaviour:
   bulletSpeed: 10
   fireRate: 7.5
   spriteRenderer: {fileID: 831253554}
+--- !u!114 &831253559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831253550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33b2f93f0c0076540bb8e5837b24dcc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 3
+  invincibilityDuration: 1.5
+  spriteRenderer: {fileID: 831253554}
+  isInvincible: 0
 --- !u!1 &900180206
 GameObject:
   m_ObjectHideFlags: 0
