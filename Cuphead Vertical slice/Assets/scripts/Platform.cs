@@ -39,7 +39,7 @@ public class PlatformBehavior : MonoBehaviour
         transform.position = new Vector3(xPos, y, 0);
         if(isfalling == true)
         {
-            fallHeight -= Time.deltaTime;
+            fallHeight -= 6* Time.deltaTime;
             fallTimer += Time.deltaTime;
             if(fallTimer > 1)
             {
