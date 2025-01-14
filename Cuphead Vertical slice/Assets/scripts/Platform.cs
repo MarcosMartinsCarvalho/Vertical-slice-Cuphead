@@ -19,9 +19,12 @@ public class PlatformBehavior : MonoBehaviour
     private Vector3 initialPosition; 
     private bool isSinking = false; 
     private bool isReturning = false;
-    private float fallTimer = 0;
+    public float fallTimer = 0;
     private float fallHeight;
-    private bool isfalling = false;
+    private bool isFalling = false;
+    public bool isDown = false;
+    public float waitTimer = 0f;
+    public float riseTimer = 0f;
 
     void Start()
     {
@@ -32,24 +35,42 @@ public class PlatformBehavior : MonoBehaviour
 
     void Update()
     {
-        CheckPlayerOnPlatform();
+
+      //  CheckPlayerOnPlatform();
         x += Time.deltaTime;
-        y = 0.1f * Mathf.Sin(0.7f*x + 1.57f) + yPos + fallHeight;
+        y = 0.2f * Mathf.Sin(0.7f*x + 1.57f) + yPos + fallHeight;
 
         transform.position = new Vector3(xPos, y, 0);
-        if(isfalling == true)
+        if(isFalling == true)
         {
-            fallHeight -= 6* Time.deltaTime;
+            
+            fallHeight -= 9* Time.deltaTime;
             fallTimer += Time.deltaTime;
             if(fallTimer > 1)
             {
-                isfalling = false;
-                fallTimer = 0;
+                isFalling = false;
+                isDown = true;
+                           
             }
-
+        }
+        if (isDown == true)
+        {
+            
+            waitTimer += Time.deltaTime;
+            if (waitTimer > 4)
+            {
+                fallHeight += 9 * Time.deltaTime;
+                riseTimer += Time.deltaTime;
+            }
+            
+        }
+        if (riseTimer > 1)
+        {
+            isDown = false;
         }
     }
 
+    
     void OnTriggerEnter2D(Collider2D col)
     {
        
@@ -58,12 +79,15 @@ public class PlatformBehavior : MonoBehaviour
         {
            
             falling();  
+            
         } 
     }
     void falling()
     {
-        isfalling = true;
-        
+        isFalling = true;
+        riseTimer = 0;
+        waitTimer = 0;
+        fallTimer = 0;
     }
     void CheckPlayerOnPlatform()
     {
