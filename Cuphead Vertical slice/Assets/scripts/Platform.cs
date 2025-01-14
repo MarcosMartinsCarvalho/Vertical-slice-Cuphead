@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using System.Threading;
 using UnityEngine;
 
 public class PlatformBehavior : MonoBehaviour
@@ -10,21 +12,59 @@ public class PlatformBehavior : MonoBehaviour
     public Transform groundCheck; 
     public LayerMask playerLayer; 
     public float groundCheckRadius = 0.5f;
-
+    private float x = 1;
+    [SerializeField] float xPos;
+    [SerializeField] float yPos;
+    private float y;
     private Vector3 initialPosition; 
     private bool isSinking = false; 
-    private bool isReturning = false; 
+    private bool isReturning = false;
+    private float fallTimer = 0;
+    private float fallHeight;
+    private bool isfalling = false;
 
     void Start()
     {
         initialPosition = transform.position;
+        xPos = initialPosition.x;
+        yPos = initialPosition.y;
     }
 
     void Update()
     {
         CheckPlayerOnPlatform();
+        x += Time.deltaTime;
+        y = 0.1f * Mathf.Sin(0.7f*x + 1.57f) + yPos + fallHeight;
+
+        transform.position = new Vector3(xPos, y, 0);
+        if(isfalling == true)
+        {
+            fallHeight -= Time.deltaTime;
+            fallTimer += Time.deltaTime;
+            if(fallTimer > 1)
+            {
+                isfalling = false;
+                fallTimer = 0;
+            }
+
+        }
     }
 
+    void OnTriggerEnter2D(Collider2D col)
+    {
+       
+
+        if (col.gameObject.tag == "fireBall")
+        {
+           
+            falling();  
+        } 
+    }
+    void falling()
+    {
+        isfalling = true;
+        
+    }
     void CheckPlayerOnPlatform()
     {
 

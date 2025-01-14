@@ -191,7 +191,7 @@ MonoBehaviour:
   groundCheck: {fileID: 6739278016942653489}
   playerLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   groundCheckRadius: 0.2
 --- !u!212 &4066121604648186460
 SpriteRenderer:

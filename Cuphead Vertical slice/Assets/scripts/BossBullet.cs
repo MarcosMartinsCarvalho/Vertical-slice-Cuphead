@@ -13,6 +13,7 @@ public class BossBullet : MonoBehaviour
     void Start()
     {
         differenceVector = Target.transform.position - transform.position;
+        
     }
 
     // Update is called once per frame
