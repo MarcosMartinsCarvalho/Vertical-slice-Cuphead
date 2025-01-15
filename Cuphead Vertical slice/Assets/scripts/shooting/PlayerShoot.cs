@@ -10,7 +10,7 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private float fireRate = 7.5f; 
     [SerializeField] private SpriteRenderer spriteRenderer; 
 
-    private bool isShooting = false;
+    public static bool isShooting = false;
 
     private Animator animator; // Reference to the Animator component
 
@@ -36,10 +36,10 @@ public class PlayerShoot : MonoBehaviour
         {
             Shoot();
             yield return new WaitForSeconds(1f / fireRate);
-            animator.SetBool("IsShooting", true);
+            //animator.SetBool("IsShooting", true);
         }
         isShooting = false;
-        animator.SetBool("IsShooting", false);
+        //animator.SetBool("IsShooting", false);
     }
 
     void Shoot()

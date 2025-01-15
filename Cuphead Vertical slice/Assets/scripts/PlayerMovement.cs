@@ -22,6 +22,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool IsJumping = false;
     [SerializeField] private bool IsDashing = false;
 
+    private int getal;
+    private int walk = 0;
+    private int jump = 0;
+    private int shoot = 0;
+    private int dash = 0;
+
     private Animator animator; // Reference to the Animator component
 
 
@@ -49,57 +55,149 @@ public class PlayerMovement : MonoBehaviour
         }
 
         HandleMovement();
+
+        getal = walk + jump + shoot;
+
+        // dash = 8, walk is 4, jump is 2, shoot is 1
     }
 
     private void HandleInput()
     {
-
+        Debug.Log(getal);
 
         if (Input.GetKey(moveLeft))
         {
-            animator.SetBool("IsIdle", false);
+            walk = 4;
+            //animator.SetBool("IsIdle", false);
 
             currentState = PlayerState.MovingLeft;
             lastDirection = -1;
 
-            animator.SetBool("IsWalking", true);
+            //animator.SetBool("IsWalking", true);
         }
         else if (Input.GetKey(moveRight))
         {
-            animator.SetBool("IsIdle", false);
+            walk = 4;
+            //animator.SetBool("IsIdle", false);
 
             currentState = PlayerState.MovingRight;
             lastDirection = 1;
 
-            animator.SetBool("IsWalking", true);
+            //animator.SetBool("IsWalking", true);
         }
         else if (isGrounded && !isDashing)
         {
-            animator.SetBool("IsWalking", false);
-            animator.SetBool("IsJumping", false);
-            animator.SetBool("IsDashing", false);
+            walk = 0;
+            jump = 0;
+            //animator.SetBool("IsWalking", false);
+            //animator.SetBool("IsJumping", false);
+            //animator.SetBool("IsDashing", false);
 
             currentState = PlayerState.Idle;
 
-            animator.SetBool("IsIdle", true);
+            //animator.SetBool("IsIdle", true);
         }
 
         if (Input.GetKeyDown(jumpKey) && isGrounded)
         {
-            animator.SetBool("IsIdle", false);
+            jump = 2;
+            //animator.SetBool("IsIdle", false);
 
             currentState = PlayerState.Jumping;
 
-            animator.SetBool("IsJumping", true);
+            //animator.SetBool("IsJumping", true);
         }
 
         if (Input.GetKeyDown(dashKey) && !isDashing)
         {
-            animator.SetBool("IsIdle", false);
+            dash = 8;
+            //animator.SetBool("IsIdle", false);
 
             currentState = PlayerState.Dashing;
 
+            //animator.SetBool("IsDashing", true);
+        }
+
+        if (PlayerShoot.isShooting)
+        {
+            shoot = 1;
+        }
+        else
+        {
+            shoot = 0;
+        }
+
+        if (isGrounded)
+        {
+            animator.SetBool("isGrounded", true);
+        }
+        else
+        {
+            animator.SetBool("isGrounded", false);
+        }
+
+        if (getal == 0)
+        {
+            animator.SetBool("IsIdle", true);
+            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", false);
+        }
+        else if (getal == 4)
+        {
+            animator.SetBool("IsWalking", true);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", false);
+        }
+        else if (getal == 2)
+        {
+            animator.SetBool("IsJumping", true);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", false);
+        }
+        else if (getal == 8)
+        {
             animator.SetBool("IsDashing", true);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsShooting", false);
+        }
+        else if (getal == 6)
+        {
+            animator.SetBool("IsJumping", true);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsWalking", true);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", false);
+        }
+        else if (getal == 1)
+        {
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", true);
+        }
+        else if (getal == 3) {
+            animator.SetBool("IsJumping", true);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", true);
+        }
+        else if (getal == 5)
+        {
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsWalking", true);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", true);
         }
 
 
@@ -214,4 +312,6 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
         }
     }
+
+    
 }
