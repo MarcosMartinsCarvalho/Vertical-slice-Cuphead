@@ -67,6 +67,7 @@ public class PlatformBehavior : MonoBehaviour
         if (riseTimer > 1)
         {
             isDown = false;
+            gameObject.GetComponent<BoxCollider2D>().enabled = true;
         }
     }
 
@@ -79,7 +80,7 @@ public class PlatformBehavior : MonoBehaviour
         {
            
             falling();  
-            
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
         } 
     }
     void falling()
