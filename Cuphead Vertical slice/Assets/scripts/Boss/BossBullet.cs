@@ -5,7 +5,7 @@ using UnityEngine;
 public class BossBullet : MonoBehaviour
 {
     public GameObject Target;
-    public float speed;
+    [SerializeField]  float speed;
     Vector3 differenceVector;
     Vector3 Direction;
     Vector3 velocity;
@@ -13,6 +13,7 @@ public class BossBullet : MonoBehaviour
     void Start()
     {
         differenceVector = Target.transform.position - transform.position;
+        
     }
 
     // Update is called once per frame
@@ -21,7 +22,10 @@ public class BossBullet : MonoBehaviour
         Direction = differenceVector.normalized;
         velocity = Direction * speed * Time.deltaTime;
         transform.position += velocity;
-
+        if (transform.position.y < -6)
+        {
+            Destroy(gameObject);
+        }
         
     
     }
