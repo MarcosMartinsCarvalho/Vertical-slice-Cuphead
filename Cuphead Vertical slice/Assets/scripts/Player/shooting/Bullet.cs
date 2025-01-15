@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour
 
     private void Start()
     {
-
+        gameObject.tag = "Bullet";
     }
 
     private void Update()
