@@ -14,9 +14,6 @@ public class PlayerAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) // Use KeyCode.P instead of "p"
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Use buildIndex instead of name
-        }
+        
     }
 }

@@ -64,16 +64,13 @@ public class PlayerMovement : MonoBehaviour
             currentState = PlayerState.Dashing;
         }
 
-
         switch (lastDirection)
         {
             case -1:
-                // Flip the sprite renderer horizontally
                 GetComponent<SpriteRenderer>().flipX = true;
                 break;
 
             case 1:
-                // Flip the sprite renderer horizontally
                 GetComponent<SpriteRenderer>().flipX = false;
                 break;
         }
@@ -96,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
                 case PlayerState.Jumping:
                     rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
                     isGrounded = false;
-                    currentState = PlayerState.Idle; // Reset state after jump impulse
+                    currentState = PlayerState.Idle;
                     break;
 
                 case PlayerState.Dashing:
@@ -115,10 +112,8 @@ public class PlayerMovement : MonoBehaviour
         isDashing = true;
         canTakeDamage = false;
 
-        // Lock Y axis to prevent falling while dashing
         rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
 
-        // Lock movement and determine dash direction using the last direction
         float dashDirection = lastDirection;
         if (dashDirection != 0)
         {
@@ -127,13 +122,11 @@ public class PlayerMovement : MonoBehaviour
 
         yield return new WaitForSeconds(dashLength);
 
-        // Stop movement and reset constraints
         rb.velocity = new Vector2(0, rb.velocity.y);
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         isDashing = false;
         canTakeDamage = true;
-
 
         if (isGrounded)
         {
@@ -153,10 +146,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // groundcheck
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
@@ -169,10 +160,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        // groundcheck
         if (collision.gameObject.CompareTag("Ground"))
         {
-
             isGrounded = false;
         }
     }
