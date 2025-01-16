@@ -25,18 +25,21 @@ public class PlatformBehavior : MonoBehaviour
     public bool isDown = false;
     public float waitTimer = 0f;
     public float riseTimer = 0f;
+    private Animator animator;
 
     void Start()
     {
         initialPosition = transform.position;
         xPos = initialPosition.x;
         yPos = initialPosition.y;
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
 
       //  CheckPlayerOnPlatform();
+
         x += Time.deltaTime;
         y = 0.2f * Mathf.Sin(0.7f*x + 1.57f) + yPos + fallHeight;
 
@@ -50,7 +53,8 @@ public class PlatformBehavior : MonoBehaviour
             {
                 isFalling = false;
                 isDown = true;
-                           
+                animator.SetTrigger("Restored");
+                animator.ResetTrigger("IsFalling");
             }
         }
         if (isDown == true)
@@ -59,12 +63,12 @@ public class PlatformBehavior : MonoBehaviour
             waitTimer += Time.deltaTime;
             if (waitTimer > 4)
             {
-                fallHeight += 9 * Time.deltaTime;
+                fallHeight += 36 * Time.deltaTime;
                 riseTimer += Time.deltaTime;
             }
             
         }
-        if (riseTimer > 1)
+        if (riseTimer >= 0.25f)
         {
             isDown = false;
             gameObject.GetComponent<BoxCollider2D>().enabled = true;
@@ -81,6 +85,8 @@ public class PlatformBehavior : MonoBehaviour
            
             falling();  
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            animator.SetTrigger("IsFalling");
+            animator.ResetTrigger("Restored");
         } 
     }
     void falling()
