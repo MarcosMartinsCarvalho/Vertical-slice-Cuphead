@@ -451,10 +451,7 @@ MonoBehaviour:
   moveRight: 100
   jumpKey: 32
   dashKey: 304
-  IsIdle: 0
-  IsWalking: 0
-  IsJumping: 0
-  IsDashing: 0
+  shootKey: 102
 --- !u!114 &902043712
 MonoBehaviour:
   m_ObjectHideFlags: 0
