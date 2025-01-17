@@ -2,28 +2,28 @@ Testplan voor de Vertical Slice
 
 Doelgroep
 
-De game is gericht op liefhebbers van classic 80's retro games. Deze spelers zijn voornamelijk pc-gamers die bereid zijn indie-games aan te schaffen op platforms zoals Steam. Ze hebben ervaring met redelijk complexe games en waarderen een diepgaande en originele verhaallijn en setting.
+De game is een replica van de game CupHead, alleen een level omdat het zo moet, het doel is dat de spelers een soort van de zelfde sfeer hebben van die game.
 
 
 Verwachtingen van spelers
 
-We hopen dat spelers de sfeer van de game waarderen. Daarnaast verwachten we dat ze plezier beleven aan het ontdekken van easter eggs in de art en dat ze de gameplay uitdagend maar toegankelijk vinden.
+We hopen dat spelers de sfeer van de game waarderen. Daarnaast verwachten we dat ze plezier beleven aan het mogelijikheden van deze level.
 
 
 Doelstellingen van de test
 
 Begrijpen of de spelers de controles intuïtief vinden.
 
-Evalueren of spelers alle mechanics herkennen en gebruiken.
+Evalueren of spelers alle mechanics makkelijk kunnen herkennen.
 
 Bepalen of spelers betrokken zijn bij het uizien van de game.
 
 
 Verwachte observaties
 
-Spelers lachen om de easter eggs in de art.
+Spelers plezier hebben tijdens spelen.
 
-Spelers hebben mogelijk moeite met de controls tijdens de eerste sessies, maar verbeteren na ongeveer drie pogingen.
+Spelers weten hoe ze moeten spelen, anders vragen ze het maar.
 
 Spelers die mechanics niet gebruiken, geven ons inzicht in waarom deze niet intuïtief zijn.
 
@@ -32,32 +32,32 @@ Testdoelen voor de testers
 
 Probeer tot het einde van de level te komen.
 
-Verzamel minstens vijf special skills.
+Niet meer dan 3 keer raken, anders zijn ze dood.
 
 
 Gedrag van testers
 
-De tester mag zich gedragen zoals hij thuis zou doen, inclusief multitasken met bijvoorbeeld een telefoon.
+De tester speelt hoe hij wilt maar geen glitches vinden zodat het makkelijker word.
 
-We vragen naar hun typische gameomgeving en bootsen deze zoveel mogelijk na (bijvoorbeeld verlichting, stoelkeuze, gebruik van controller of toetsenbord).
+De tester bepaald zelf hoe hij tot het einde komt van de level totdat de boss dood is.
 
 
 Comfort van testers
 
-We bieden koffie, thee, en snacks aan.
+We geven iets te drinken of eten
 
-Het team stelt zichzelf kort voor en toont een eerdere game als introductie.
+Wij zeggen wie we zijn en maken we een soort van korte introductie.
 
-We bieden een keuze aan verschillende zitopties zoals een bankstel, bureaustoel of zitzak.
+We bieden ook de mogelijkheid om met koptelefoons spelen of niet.
 
 
 Gedrag van afnemers
 
-Één persoon geeft vooraf gedefinieerde instructies.
+Een iemand geeft de Instructies hoe je moet spelen
 
-Tijdens de test zijn we stil en vermijden we discussies of extra uitleg.
+Wij zijn afwachtend of iemand ons nodig heeft voor vragen over iets of iets anders.
 
-We stellen alleen vragen als de speler niet genoeg hardop denkt.
+Wij vragen de tester of alles goed begrijpt als wij ziet dat hij niet weet hoe die moet spelen.
 
 
 Vragenlijst voor testers
@@ -66,31 +66,29 @@ Wat vond je van je eerste encounter met de boss.
 
 Was het moelijk te verslaan?
 
+Zit de echte CupHead level ook zo eruit?
+
 Hoe vond je de sfeer van het boslevel?
 
 Had je het gevoel dat je verdwaalde in het bos?
 
 Wat vond je van de controls? Denk je dat je alle moves hebt gebruikt?
 
-Welke moves vond je het fijnst werken?
-
 
 Benodigdheden
 
-Broodjes, koffie en thee voor 12 personen.
-
-Buttons van de studio als bedankje voor de testers.
-
-Arcade kast met de vorige game voor wachtende testers.
-
-Twee laptops met builds (en laders) voor back-up.
+Twee laptops met builds voor back-up.
 
 Toetsbord en muis en of extra scherm (als het nodig is).
+
+Kooptelefoons.
+
+OBS aan het filmen met de camera tijden het testen.
 
 
 Footage en analyse
 
-Zorg voor stabiele footage waarbij gezichtsuitdrukkingen duidelijk zichtbaar zijn.
+Zorg voor goeie beeld van testen met camera en mic.
 
 Maak een screen capture via OBS Studio.
 
