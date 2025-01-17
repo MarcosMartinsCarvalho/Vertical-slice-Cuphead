@@ -15,12 +15,12 @@ public class PlayerShoot : MonoBehaviour
     private Animator animator; // Reference to the Animator component
 
 
-    void Start()
+     void Start()
     {
         animator = GetComponent<Animator>(); // Get the Animator component
     }
 
-    void Update()
+     void Update()
     {
         if (Input.GetMouseButtonDown(0) && !isShooting)
         {
@@ -29,7 +29,7 @@ public class PlayerShoot : MonoBehaviour
         
     }
 
-    IEnumerator ShootCoroutine()
+    private IEnumerator ShootCoroutine()
     {
         isShooting = true;
         while (Input.GetMouseButton(0)) 
@@ -42,7 +42,7 @@ public class PlayerShoot : MonoBehaviour
         //animator.SetBool("IsShooting", false);
     }
 
-    void Shoot()
+    private void Shoot()
     {
         
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
