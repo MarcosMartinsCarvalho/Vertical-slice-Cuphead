@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleInput()
     {
-        Debug.Log(getal);
+        //Debug.Log(getal);
 
         if (Input.GetKey(moveLeft))
         {
