@@ -19,6 +19,6 @@ public class bossMove : MonoBehaviour
         x += Time.deltaTime;
         y = Mathf.Sin(x);
 
-      //  transform.position = new Vector3(xPos, y, 0);
+        transform.position = new Vector3(xPos, y, 0);
     }
 }
