@@ -11,36 +11,49 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool isGrounded = false;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private bool canTakeDamage = true;
-
+    [Space]
     [SerializeField] private KeyCode moveLeft = KeyCode.A;
     [SerializeField] private KeyCode moveRight = KeyCode.D;
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
     [SerializeField] private KeyCode dashKey = KeyCode.LeftShift;
-    [SerializeField] private KeyCode shootKey = KeyCode.F;
+    [Space]
+    [SerializeField] private bool IsIdle = false;
+    [SerializeField] private bool IsWalking = false;
+    [SerializeField] private bool IsJumping = false;
+    [SerializeField] private bool RunAndGun = false;
+    [SerializeField] private bool IsDashing = false;
+    [Space]
+    
 
-    private int lastDirection = 0;
+
+
+
+
+    private int getal;
+    private int walk = 0;
+    private int jump = 0;
+    private int shoot = 0;
+    private int IsWalkingAndShooting1 = 0;
+    private int dash = 0;
+
+    private Animator animator; 
+
+
+    public enum PlayerState { Idle, MovingLeft, MovingRight, Jumping, Dashing }
+    public PlayerState currentState = PlayerState.Idle;
+
     private bool isDashing = false;
-    private PlayerState currentState = PlayerState.Idle;
-    private Animator animator;
-
-    private enum PlayerState
-    {
-        Idle,
-        MovingLeft,
-        MovingRight,
-        Jumping,
-        Dashing,
-        Shooting,
-        RunningAndShooting
-    }
+    private int lastDirection = 0;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>(); 
     }
 
     void Update()
+
     {
+        
         if (!isDashing)
         {
             HandleInput();
@@ -52,82 +65,213 @@ public class PlayerMovement : MonoBehaviour
         }
 
         HandleMovement();
-        UpdateAnimator();
+
+        getal = walk + jump + shoot;
+
+        // dash = 8, walk is 4, jump is 2, shoot is 1
     }
 
     private void HandleInput()
     {
-        bool isMoving = Input.GetKey(moveLeft) || Input.GetKey(moveRight);
-        bool isShooting = Input.GetKey(shootKey);
+        Debug.Log(getal);
 
-        if (isMoving && isShooting)
+        if (Input.GetKey(moveLeft))
         {
-            currentState = PlayerState.RunningAndShooting;
-        }
-        else if (Input.GetKey(moveLeft) && !Input.GetKey(moveRight))
-        {
+            walk = 4;
+            //animator.SetBool("IsIdle", false);
+
             currentState = PlayerState.MovingLeft;
             lastDirection = -1;
+
+            //animator.SetBool("IsWalking", true);
         }
-        else if (Input.GetKey(moveRight) && !Input.GetKey(moveLeft))
+        else if (Input.GetKey(moveRight))
         {
+            walk = 4;
+            //animator.SetBool("IsIdle", false);
+
             currentState = PlayerState.MovingRight;
             lastDirection = 1;
-        }
-        else if (isShooting)
-        {
-            currentState = PlayerState.Shooting;
+
+            //animator.SetBool("IsWalking", true);
         }
         else if (isGrounded && !isDashing)
         {
+            walk = 0;
+            jump = 0;
+            //animator.SetBool("IsWalking", false);
+            //animator.SetBool("IsJumping", false);
+            //animator.SetBool("IsDashing", false);
+
             currentState = PlayerState.Idle;
+
+            //animator.SetBool("IsIdle", true);
         }
 
         if (Input.GetKeyDown(jumpKey) && isGrounded)
         {
+            jump = 2;
+            //animator.SetBool("IsIdle", false);
+
             currentState = PlayerState.Jumping;
+
+            //animator.SetBool("IsJumping", true);
         }
 
         if (Input.GetKeyDown(dashKey) && !isDashing)
         {
+            dash = 8;
+            //animator.SetBool("IsIdle", false);
+
             currentState = PlayerState.Dashing;
+
+            //animator.SetBool("IsDashing", true);
         }
 
-        GetComponent<SpriteRenderer>().flipX = lastDirection == -1;
+        if (PlayerShoot.isShooting)
+        {
+            shoot = 1;
+        }
+        else
+        {
+            shoot = 0;
+        }
+
+        if (isGrounded)
+        {
+            animator.SetBool("isGrounded", true);
+        }
+        else
+        {
+            animator.SetBool("isGrounded", false);
+        }
+        if (getal == 7)
+        {
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsWalking", true);
+            animator.SetBool("IsJumping", true);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", true);
+            animator.SetBool("RunAndGun", false);
+        }
+
+        if (getal == 0)
+        {
+            animator.SetBool("IsIdle", true);
+            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", false);
+            animator.SetBool("RunAndGun", false);
+        }
+        else if (getal == 4)
+        {
+            animator.SetBool("IsWalking", true);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", false);
+            animator.SetBool("RunAndGun", false);
+        }
+        else if (getal == 2)
+        {
+            animator.SetBool("IsJumping", true);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", false);
+            animator.SetBool("RunAndGun", false);
+        }
+        else if (getal == 8)
+        {
+            animator.SetBool("IsDashing", true);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsShooting", false);
+            animator.SetBool("RunAndGun", false);
+        }
+        else if (getal == 6)
+        {
+            animator.SetBool("IsJumping", true);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsWalking", true);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", false);
+            animator.SetBool("RunAndGun", false);
+        }
+        else if (getal == 1)
+        {
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", true);
+            animator.SetBool("RunAndGun", false);
+        }
+        else if (getal == 3)
+        {
+            animator.SetBool("IsJumping", true);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", true);
+            animator.SetBool("RunAndGun", false);
+        }
+        else if (getal == 5)
+        {
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsIdle", false);
+            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsDashing", false);
+            animator.SetBool("IsShooting", false);
+            animator.SetBool("RunAndGun", true);
+            
+        }
+
+
+        switch (lastDirection)
+        {
+            case -1:
+                
+                GetComponent<SpriteRenderer>().flipX = true;
+                break;
+
+            case 1:
+                
+                GetComponent<SpriteRenderer>().flipX = false;
+                break;
+        }
     }
 
     private void HandleMovement()
     {
-        if (isDashing) return;
-
-        switch (currentState)
+        if (!isDashing)
         {
-            case PlayerState.MovingLeft:
-            case PlayerState.RunningAndShooting:
-                rb.velocity = new Vector2(-movementSpeed, rb.velocity.y);
-                break;
+            switch (currentState)
+            {
+                case PlayerState.MovingLeft:
+                    rb.velocity = new Vector2(-movementSpeed, rb.velocity.y);
+                    break;
 
-            case PlayerState.MovingRight:
-                rb.velocity = new Vector2(movementSpeed, rb.velocity.y);
-                break;
+                case PlayerState.MovingRight:
+                    rb.velocity = new Vector2(movementSpeed, rb.velocity.y);
+                    break;
 
-            case PlayerState.Jumping:
-                rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
-                isGrounded = false;
-                currentState = PlayerState.Idle;
-                break;
+                case PlayerState.Jumping:
+                    rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
+                    isGrounded = false;
+                    currentState = PlayerState.Idle; 
+                    break;
 
-            case PlayerState.Dashing:
-                StartCoroutine(PerformDash());
-                break;
+                case PlayerState.Dashing:
+                    StartCoroutine(PerformDash());
+                    break;
 
-            case PlayerState.Idle:
-                rb.velocity = new Vector2(0, rb.velocity.y);
-                break;
-
-            case PlayerState.Shooting:
-                rb.velocity = new Vector2(0, rb.velocity.y);
-                break;
+                case PlayerState.Idle:
+                    rb.velocity = new Vector2(0, rb.velocity.y);
+                    break;
+            }
         }
     }
 
@@ -135,36 +279,68 @@ public class PlayerMovement : MonoBehaviour
     {
         isDashing = true;
         canTakeDamage = false;
+
+       
         rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
 
-        rb.velocity = new Vector2(lastDirection * dashSpeed, 0);
+        
+        float dashDirection = lastDirection;
+        if (dashDirection != 0)
+        {
+            rb.velocity = new Vector2(dashDirection * dashSpeed, 0);
+        }
+
         yield return new WaitForSeconds(dashLength);
 
+        
         rb.velocity = new Vector2(0, rb.velocity.y);
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
         isDashing = false;
         canTakeDamage = true;
 
-        if (isGrounded) currentState = PlayerState.Idle;
+
+        if (isGrounded)
+        {
+            currentState = PlayerState.Idle;
+        }
+        else if (Input.GetKey(moveLeft))
+        {
+            currentState = PlayerState.MovingLeft;
+        }
+        else if (Input.GetKey(moveRight))
+        {
+            currentState = PlayerState.MovingRight;
+        }
+        else
+        {
+            currentState = PlayerState.Idle;
+        }
     }
 
-    private void UpdateAnimator()
-    {
-        animator.SetBool("IsIdle", currentState == PlayerState.Idle);
-        animator.SetBool("IsWalking", currentState == PlayerState.MovingLeft || currentState == PlayerState.MovingRight);
-        animator.SetBool("IsJumping", currentState == PlayerState.Jumping);
-        animator.SetBool("IsDashing", currentState == PlayerState.Dashing);
-        animator.SetBool("IsShooting", currentState == PlayerState.Shooting);
-        animator.SetBool("IsRunningAndShooting", currentState == PlayerState.RunningAndShooting);
-    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        isGrounded = true;
+        
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+            if (!isDashing)
+            {
+                currentState = PlayerState.Idle;
+            }
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        isGrounded = false;
+        
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+
+            isGrounded = false;
+        }
     }
+
+
 }

@@ -8,7 +8,9 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private Transform bulletSpawnPoint; 
     [SerializeField] private float bulletSpeed = 10f; 
     [SerializeField] private float fireRate = 7.5f; 
-    [SerializeField] private SpriteRenderer spriteRenderer; 
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [Space]
+    public PlayerMovement PlayerMovement;
 
     public static bool isShooting = false;
 
@@ -32,7 +34,7 @@ public class PlayerShoot : MonoBehaviour
     IEnumerator ShootCoroutine()
     {
         isShooting = true;
-        while (Input.GetMouseButton(0)) 
+        while (Input.GetMouseButton(0) && PlayerMovement.currentState != PlayerMovement.PlayerState.Jumping)
         {
             Shoot();
             yield return new WaitForSeconds(1f / fireRate);
