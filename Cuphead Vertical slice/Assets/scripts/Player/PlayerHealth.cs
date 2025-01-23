@@ -10,6 +10,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer; 
     private int currentHP; 
     public bool isInvincible = false;
+    private bool TakingDamage = false;
 
     private Animator animator;
 
@@ -71,9 +72,19 @@ public class PlayerHealth : MonoBehaviour
 
     private IEnumerator PainAnim()
     {
-        animator.SetBool("Pain", true);
-        yield return new WaitForSeconds(0.5f);
-        animator.SetBool("Pain", false);
+        if (TakingDamage) 
+        {
+            
+        } 
+        else
+        {
+            TakingDamage = true;
+            animator.SetBool("Pain", true);
+            yield return new WaitForSeconds(0.5f);
+            animator.SetBool("Pain", false);
+            TakingDamage = false;
+        }
+        
     }
 
 
