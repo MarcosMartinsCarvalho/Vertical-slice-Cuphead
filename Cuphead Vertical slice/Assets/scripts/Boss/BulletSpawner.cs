@@ -37,7 +37,7 @@ public class BulletSpawner : MonoBehaviour
         
         foreach (GameObject platform in allplatforms)
         {
-            if (platform.GetComponent<PlatformBehavior>().isDown == false)
+            if (platform.GetComponent<Platform>().isDown == false)
             {
                 availible.Add(platform);
                 target = availible[Random.Range(0, availible.Count)];

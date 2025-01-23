@@ -4,7 +4,7 @@ using System.Net;
 using System.Threading;
 using UnityEngine;
 
-public class PlatformBehavior : MonoBehaviour
+public class Platform : MonoBehaviour
 {
     public float sinkSpeed = 1f; 
     public float resetSpeed = 1f; 
@@ -34,6 +34,7 @@ public class PlatformBehavior : MonoBehaviour
         yPos = initialPosition.y;
         animator = GetComponent<Animator>();
     }
+
 
     void Update()
     {
@@ -75,20 +76,18 @@ public class PlatformBehavior : MonoBehaviour
         }
     }
 
-    
+
     void OnTriggerEnter2D(Collider2D col)
     {
-       
-
-        if (col.gameObject.tag == "fireBall")
+        if (col.CompareTag("fireBall"))
         {
-           
-            falling();  
-            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            falling();
+            GetComponent<Collider2D>().enabled = false;
             animator.SetTrigger("IsFalling");
             animator.ResetTrigger("Restored");
-        } 
+        }
     }
+
     void falling()
     {
         isFalling = true;
