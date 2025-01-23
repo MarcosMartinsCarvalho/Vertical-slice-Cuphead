@@ -10,19 +10,36 @@ public class BulletSpawner : MonoBehaviour
     [SerializeField] private List<GameObject> availible = new List<GameObject>();
     [SerializeField] private List<GameObject> allplatforms = new List<GameObject>();
     public float cooldown;
+    private Animator animator;
     void Start()
     {
-        
-        
+        animator = GetComponent<Animator>();
+
     }
 
     
     void Update()
     {
         cooldown +=  Time.deltaTime;
-
+        if (cooldown > 0.75) 
+        {
+            animator.SetTrigger("MouthClose");
+            animator.ResetTrigger("Fire");
+        }
+        if (cooldown > 1)
+        {
+            animator.SetTrigger("Normal");
+            animator.ResetTrigger("MouthClose");
+        }
+        if (cooldown > 2) 
+        {
+            animator.SetTrigger("StartAttack");
+            animator.ResetTrigger("Normal");
+        }
         if (cooldown > 3) 
         {
+            animator.SetTrigger("Fire");
+            animator.ResetTrigger("StartAttack");
             availible.Clear();
             CheckAvailible();    
             GameObject newBullet = Instantiate(bullet);
