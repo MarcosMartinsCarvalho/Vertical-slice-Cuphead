@@ -428,32 +428,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &301677614 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7439992560857685214, guid: 5393ab5dcb7765a40a638b85f0dd9090, type: 3}
-  m_PrefabInstance: {fileID: 1145289085}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &301677621 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 6025175920430436690, guid: 5393ab5dcb7765a40a638b85f0dd9090, type: 3}
-  m_PrefabInstance: {fileID: 1145289085}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &301677622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 301677614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33b2f93f0c0076540bb8e5837b24dcc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHP: 3
-  invincibilityDuration: 1.5
-  spriteRenderer: {fileID: 301677621}
-  isInvincible: 0
 --- !u!1 &371310766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1634,10 +1608,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7439992560857685214, guid: 5393ab5dcb7765a40a638b85f0dd9090, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 301677622}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5393ab5dcb7765a40a638b85f0dd9090, type: 3}
 --- !u!4 &1197019440 stripped
 Transform:
