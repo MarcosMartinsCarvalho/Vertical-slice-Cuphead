@@ -14,6 +14,10 @@ public class Bullet : MonoBehaviour
     {
         // Move the GameObject forward using Vector3
         this.transform.position += (direction * speed * Time.deltaTime);
+        if (Input.GetMouseButton(1))
+        {
+
+        }
     }
 
     public void SetDirection(Vector3 newDirection)

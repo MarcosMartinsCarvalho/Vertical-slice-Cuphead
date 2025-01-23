@@ -14,12 +14,12 @@ public class PlayerShoot : MonoBehaviour
 
     public static bool isShooting = false;
 
-    private Animator animator; // Reference to the Animator component
+    [SerializeField] Animator ParticleAnimation; // Reference to the Animator component
 
 
     void Start()
     {
-        animator = GetComponent<Animator>(); // Get the Animator component
+        
     }
 
     void Update()
@@ -34,7 +34,7 @@ public class PlayerShoot : MonoBehaviour
     IEnumerator ShootCoroutine()
     {
         isShooting = true;
-        while (Input.GetMouseButton(0) && PlayerMovement.currentState != PlayerMovement.PlayerState.Jumping)
+        while (Input.GetMouseButton(0) && gameObject.GetComponent<SpriteRenderer>().enabled == true)
         {
             Shoot();
             yield return new WaitForSeconds(1f / fireRate);
@@ -48,7 +48,7 @@ public class PlayerShoot : MonoBehaviour
     {
         
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-
+        ParticleAnimation.SetTrigger("Shot");
        
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
