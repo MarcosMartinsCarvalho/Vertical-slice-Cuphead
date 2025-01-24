@@ -1,7 +1,10 @@
 using System.Collections;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 using System.Collections.Generic;
 using System.Threading;
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 using UnityEngine;
@@ -18,9 +21,14 @@ public class PlatformScript : MonoBehaviour
     private bool isDown = false;  // isDown added to track if the platform is falling
     private Animator animator;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public static int health = 75;
     
    
+=======
+    private Vector3 originalPosition;
+
+>>>>>>> Stashed changes
 =======
     private Vector3 originalPosition;
 
@@ -33,6 +41,7 @@ public class PlatformScript : MonoBehaviour
 
     void Update()
     {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         if (health < 1)
         {
@@ -47,6 +56,10 @@ public class PlatformScript : MonoBehaviour
         // Handle Idle movement up and down
         if (!isFalling && !isStruggling)
 >>>>>>> Stashed changes
+=======
+        // Handle Idle movement up and down
+        if (!isFalling && !isStruggling)
+>>>>>>> Stashed changes
         {
             transform.position += new Vector3(0, Mathf.Sin(Time.time * idleMoveSpeed), 0);
         }
@@ -57,6 +70,7 @@ public class PlatformScript : MonoBehaviour
         // Check if the player is colliding with the platform
         if (collision.gameObject.CompareTag("Player"))
         {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
             if (platform.GetComponent<Platform>().isDown == false)
             {
@@ -94,6 +108,19 @@ public class PlatformScript : MonoBehaviour
         }
     }
 
+=======
+            isStruggling = true;
+            animator.SetBool("Struggle", true);
+        }
+
+        // Check if the platform gets hit by a fireball
+        if (collision.gameObject.CompareTag("Fireball"))
+        {
+            StartCoroutine(FallAndRestore());
+        }
+    }
+
+>>>>>>> Stashed changes
     void OnCollisionExit2D(Collision2D collision)
     {
         // Stop struggling when the player leaves the platform
@@ -128,5 +155,8 @@ public class PlatformScript : MonoBehaviour
 
     // Public property to access isDown
     public bool IsDown => isDown;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
