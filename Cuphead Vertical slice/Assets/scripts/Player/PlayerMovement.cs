@@ -162,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", true);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("IsDead", false);
+            animator.SetBool("isDead", false);
         }
 
         if (getal == 0)
@@ -173,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", false);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("IsDead", false);
+            animator.SetBool("isDead", false);
         }
         else if (getal == 4)
         {
@@ -183,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", false);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("IsDead", false);
+            animator.SetBool("isDead", false);
         }
         else if (getal == 2)
         {
@@ -193,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", false);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("IsDead", false);
+            animator.SetBool("isDead", false);
         }
         else if (getal == 8)
         {
@@ -203,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsJumping", false);
             animator.SetBool("IsShooting", false);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("IsDead", false);
+            animator.SetBool("isDead", false);
         }
         else if (getal == 6)
         {
@@ -213,7 +213,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", false);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("IsDead", false);
+            animator.SetBool("isDead", false);
         }
         else if (getal == 1)
         {
@@ -223,7 +223,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", true);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("IsDead", false);
+            animator.SetBool("isDead", false);
         }
         else if (getal == 3)
         {
@@ -233,7 +233,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", true);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("IsDead", false);
+            animator.SetBool("isDead", false);
         }
         else if (getal == 5)
         {
@@ -243,11 +243,11 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", false);
             animator.SetBool("RunAndGun", true);
-            animator.SetBool("IsDead", false);
+            animator.SetBool("isDead", false);
 
         }
         else if(getal == -1) {
-            animator.SetBool("IsDead", true);
+            animator.SetBool("isDead", true);
             animator.SetBool("IsJumping", false);
             animator.SetBool("IsIdle", false);
             animator.SetBool("IsWalking", false);
