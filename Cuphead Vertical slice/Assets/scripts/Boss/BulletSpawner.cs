@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class BulletSpawner : MonoBehaviour
@@ -11,6 +12,9 @@ public class BulletSpawner : MonoBehaviour
     [SerializeField] private List<GameObject> allplatforms = new List<GameObject>();
     public float cooldown;
     private Animator animator;
+    public static int health = 75;
+    
+   
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -20,6 +24,13 @@ public class BulletSpawner : MonoBehaviour
     
     void Update()
     {
+        if (health < 1)
+        {
+            
+            transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+            transform.position -= new Vector3(0, 1 * Time.deltaTime, 0);
+            cooldown = 0;
+        }
         cooldown +=  Time.deltaTime;
         if (cooldown > 0.75) 
         {
@@ -61,4 +72,21 @@ public class BulletSpawner : MonoBehaviour
             }
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        {
+            if (collision.gameObject.tag == "Bullet")
+            {
+                health -= 1;
+                Destroy(collision.gameObject);
+            }
+            if (health < 1)
+            {
+                animator.SetTrigger("Die");
+                
+            }
+        }
+    }
+
 }
