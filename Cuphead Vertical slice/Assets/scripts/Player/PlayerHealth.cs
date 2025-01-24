@@ -11,6 +11,9 @@ public class PlayerHealth : MonoBehaviour
     private int currentHP; 
     public bool isInvincible = false;
     private bool TakingDamage = false;
+    public GameObject Health3;
+    public GameObject Health2;
+    public GameObject Health1;
 
     private Animator animator;
 
@@ -45,6 +48,8 @@ public class PlayerHealth : MonoBehaviour
         
 
         StartCoroutine(InvincibilityCoroutine());
+
+        
     }
 
     private IEnumerator InvincibilityCoroutine()
@@ -80,11 +85,40 @@ public class PlayerHealth : MonoBehaviour
         {
             TakingDamage = true;
             animator.SetBool("Pain", true);
+            UpdateHealthUI();
             yield return new WaitForSeconds(0.5f);
             animator.SetBool("Pain", false);
             TakingDamage = false;
         }
         
+    }
+
+    private void UpdateHealthUI()
+    {
+        if (currentHP == 3)
+        {
+            Health3.SetActive(true);
+            Health2.SetActive(false);
+            Health1.SetActive(false);
+        }
+        else if (currentHP == 2)
+        {
+            Health3.SetActive(false);
+            Health2.SetActive(true);
+            Health1.SetActive(false);
+        }
+        else if (currentHP == 1)
+        {
+            Health3.SetActive(false);
+            Health2.SetActive(false);
+            Health1.SetActive(true);
+        }
+        else if (currentHP == 0)
+        {
+            Health3.SetActive(false);
+            Health2.SetActive(false);
+            Health1.SetActive(false);
+        }
     }
 
 

@@ -454,6 +454,9 @@ MonoBehaviour:
   invincibilityDuration: 1.5
   spriteRenderer: {fileID: 301677621}
   isInvincible: 0
+  Health3: {fileID: 372725111}
+  Health2: {fileID: 918294695}
+  Health1: {fileID: 468002210}
 --- !u!1 &338838816
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,12 +688,20 @@ MonoBehaviour:
   playerLayer:
     m_Bits: 0
   groundCheckRadius: 0.5
+  x: 1
   xPos: -0.32
   yPos: 1.32
+  y: 0
+  initialPosition: {x: 0, y: 0, z: 0}
+  isSinking: 0
+  isReturning: 0
   fallTimer: 0
+  fallHeight: 0
+  isFalling: 0
   isDown: 0
   waitTimer: 0
   riseTimer: 0
+  animator: {fileID: 0}
 --- !u!95 &371310771
 Animator:
   serializedVersion: 5
@@ -1262,12 +1273,20 @@ MonoBehaviour:
   playerLayer:
     m_Bits: 0
   groundCheckRadius: 0.5
+  x: 1
   xPos: -0.32
   yPos: 1.32
+  y: 0
+  initialPosition: {x: 0, y: 0, z: 0}
+  isSinking: 0
+  isReturning: 0
   fallTimer: 0
+  fallHeight: 0
+  isFalling: 0
   isDown: 0
   waitTimer: 0
   riseTimer: 0
+  animator: {fileID: 0}
 --- !u!95 &751609163
 Animator:
   serializedVersion: 5
@@ -1923,12 +1942,20 @@ MonoBehaviour:
   playerLayer:
     m_Bits: 0
   groundCheckRadius: 0.5
+  x: 1
   xPos: -0.32
   yPos: 1.32
+  y: 0
+  initialPosition: {x: 0, y: 0, z: 0}
+  isSinking: 0
+  isReturning: 0
   fallTimer: 0
+  fallHeight: 0
+  isFalling: 0
   isDown: 0
   waitTimer: 0
   riseTimer: 0
+  animator: {fileID: 0}
 --- !u!95 &1021850958
 Animator:
   serializedVersion: 5
@@ -2214,12 +2241,20 @@ MonoBehaviour:
   playerLayer:
     m_Bits: 0
   groundCheckRadius: 0.5
+  x: 1
   xPos: -0.32
   yPos: 1.32
+  y: 0
+  initialPosition: {x: 0, y: 0, z: 0}
+  isSinking: 0
+  isReturning: 0
   fallTimer: 0
+  fallHeight: 0
+  isFalling: 0
   isDown: 0
   waitTimer: 0
   riseTimer: 0
+  animator: {fileID: 0}
 --- !u!95 &1342717394
 Animator:
   serializedVersion: 5
@@ -2590,12 +2625,20 @@ MonoBehaviour:
   playerLayer:
     m_Bits: 0
   groundCheckRadius: 0.5
+  x: 1
   xPos: -0.32
   yPos: 1.32
+  y: 0
+  initialPosition: {x: 0, y: 0, z: 0}
+  isSinking: 0
+  isReturning: 0
   fallTimer: 0
+  fallHeight: 0
+  isFalling: 0
   isDown: 0
   waitTimer: 0
   riseTimer: 0
+  animator: {fileID: 0}
 --- !u!95 &1621814812
 Animator:
   serializedVersion: 5
@@ -2796,12 +2839,20 @@ MonoBehaviour:
   playerLayer:
     m_Bits: 0
   groundCheckRadius: 0.5
+  x: 1
   xPos: -0.32
   yPos: 1.32
+  y: 0
+  initialPosition: {x: 0, y: 0, z: 0}
+  isSinking: 0
+  isReturning: 0
   fallTimer: 0
+  fallHeight: 0
+  isFalling: 0
   isDown: 0
   waitTimer: 0
   riseTimer: 0
+  animator: {fileID: 0}
 --- !u!95 &1670790718
 Animator:
   serializedVersion: 5
@@ -3375,12 +3426,20 @@ MonoBehaviour:
   playerLayer:
     m_Bits: 0
   groundCheckRadius: 0.5
+  x: 1
   xPos: -0.32
   yPos: 1.32
+  y: 0
+  initialPosition: {x: 0, y: 0, z: 0}
+  isSinking: 0
+  isReturning: 0
   fallTimer: 0
+  fallHeight: 0
+  isFalling: 0
   isDown: 0
   waitTimer: 0
   riseTimer: 0
+  animator: {fileID: 0}
 --- !u!95 &2004823264
 Animator:
   serializedVersion: 5
