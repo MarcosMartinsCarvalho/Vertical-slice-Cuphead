@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
     private int IsWalkingAndShooting1 = 0;
     private int dash = 0;
 
-    private Animator animator; 
+     private Animator animator; 
 
 
 
