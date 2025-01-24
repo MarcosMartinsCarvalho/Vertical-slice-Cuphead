@@ -11,9 +11,10 @@ public class PlayerHealth : MonoBehaviour
     private int currentHP; 
     public bool isInvincible = false;
     private bool TakingDamage = false;
-    public GameObject Health3;
-    public GameObject Health2;
-    public GameObject Health1;
+    [SerializeField] private GameObject Health3;
+    [SerializeField] private GameObject Health2;
+    [SerializeField] private GameObject Health1;
+    public static bool isDead = false;
 
     private Animator animator;
 
@@ -71,6 +72,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
+        isDead = true;
         Debug.Log("El jugador ha muerto");
 
     }
