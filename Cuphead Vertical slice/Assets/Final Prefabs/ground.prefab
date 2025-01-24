@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2375790752790840593}
   - component: {fileID: 6228188674032901355}
   - component: {fileID: 2396800222531343662}
+  - component: {fileID: 9045023542025567318}
   m_Layer: 0
   m_Name: ground
   m_TagString: Ground
@@ -26,9 +27,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4456418733015801083}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.342, y: -6.01, z: 0.0021822406}
-  m_LocalScale: {x: 18.582178, y: 1.171317, z: 1}
+  m_LocalScale: {x: 1.7569073, y: 0.27160782, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -130,3 +131,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &9045023542025567318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4456418733015801083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 534d088854dd34e4a88d6cc630aad64e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mosquito: {fileID: 0}
+  yOffset: 0
