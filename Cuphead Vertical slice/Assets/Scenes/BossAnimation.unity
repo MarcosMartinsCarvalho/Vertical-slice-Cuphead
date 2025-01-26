@@ -280,10 +280,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e551b28c6bde1b448915ee828b49af33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 1045200417}
   bullet: {fileID: 8166381894768313023, guid: f10c0b965bb85144d9957254a9916a99, type: 3}
   spawnplace: {fileID: 582091336}
-  availible: []
+  availible:
+  - {fileID: 1045200417}
+  - {fileID: 1155502283}
+  - {fileID: 798712170}
+  - {fileID: 1125020012}
+  - {fileID: 527480524}
   allplatforms:
   - {fileID: 1045200417}
   - {fileID: 1155502283}
@@ -636,20 +641,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae7cb39e9dd96a04aaaec5298b067e17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sinkSpeed: 1
-  resetSpeed: 1
-  sinkDelay: 1
-  groundCheck: {fileID: 1991250405}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  groundCheckRadius: 0.5
-  xPos: -0.32
-  yPos: 1.32
-  fallTimer: 0
-  isDown: 0
-  waitTimer: 0
-  riseTimer: 0
 --- !u!95 &527480529
 Animator:
   serializedVersion: 5
@@ -1012,20 +1003,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae7cb39e9dd96a04aaaec5298b067e17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sinkSpeed: 1
-  resetSpeed: 1
-  sinkDelay: 1
-  groundCheck: {fileID: 893876185}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  groundCheckRadius: 0.5
-  xPos: 6.5
-  yPos: 0
-  fallTimer: 0
-  isDown: 0
-  waitTimer: 0
-  riseTimer: 0
 --- !u!95 &798712175
 Animator:
   serializedVersion: 5
@@ -1251,20 +1228,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae7cb39e9dd96a04aaaec5298b067e17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sinkSpeed: 1
-  resetSpeed: 1
-  sinkDelay: 1
-  groundCheck: {fileID: 1244190272}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  groundCheckRadius: 0.5
-  xPos: 1.34
-  yPos: -1.96
-  fallTimer: 0
-  isDown: 0
-  waitTimer: 0
-  riseTimer: 0
 --- !u!95 &1045200422
 Animator:
   serializedVersion: 5
@@ -1459,20 +1422,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae7cb39e9dd96a04aaaec5298b067e17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sinkSpeed: 1
-  resetSpeed: 1
-  sinkDelay: 1
-  groundCheck: {fileID: 336196711}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  groundCheckRadius: 0.5
-  xPos: 6.5
-  yPos: 0
-  fallTimer: 0
-  isDown: 0
-  waitTimer: 0
-  riseTimer: 0
 --- !u!95 &1125020017
 Animator:
   serializedVersion: 5
@@ -1667,20 +1616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae7cb39e9dd96a04aaaec5298b067e17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sinkSpeed: 1
-  resetSpeed: 1
-  sinkDelay: 1
-  groundCheck: {fileID: 1953106492}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  groundCheckRadius: 0.5
-  xPos: 6.5
-  yPos: 0
-  fallTimer: 0
-  isDown: 0
-  waitTimer: 0
-  riseTimer: 0
 --- !u!95 &1155502288
 Animator:
   serializedVersion: 5

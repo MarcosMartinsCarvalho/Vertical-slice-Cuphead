@@ -23,7 +23,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool RunAndGun = false;
     [SerializeField] private bool IsDashing = false;
     [Space]
-    
+    [SerializeField] private float groundCheckDelay = 0.1f; // Adjustable delay
+    private Coroutine groundCheckCoroutine;
+    private bool isGroundedDelayed = false; // Stable ground state for logic
 
 
 
@@ -70,8 +72,25 @@ public class PlayerMovement : MonoBehaviour
         getal = walk + jump + shoot;
 
         // dash = 8, walk is 4, jump is 2, shoot is 1
+        UpdateGroundedState();
     }
-
+    private void UpdateGroundedState()
+    {
+        if (isGrounded != isGroundedDelayed)
+        {
+            if (groundCheckCoroutine != null)
+            {
+                StopCoroutine(groundCheckCoroutine);
+            }
+            groundCheckCoroutine = StartCoroutine(GroundCheckDelayCoroutine());
+        }
+    }
+    private IEnumerator GroundCheckDelayCoroutine()
+    {
+        yield return new WaitForSeconds(groundCheckDelay);
+        isGroundedDelayed = isGrounded; // Apply stable ground state after delay
+        animator.SetBool("isGrounded", isGroundedDelayed);
+    }
     private void HandleInput()
     {
         //Debug.Log(getal);
