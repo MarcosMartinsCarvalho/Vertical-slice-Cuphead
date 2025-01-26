@@ -34,7 +34,7 @@ public class PlayerShoot : MonoBehaviour
     IEnumerator ShootCoroutine()
     {
         isShooting = true;
-        while (Input.GetMouseButton(3) && gameObject.GetComponent<SpriteRenderer>().enabled == true)
+        while (Input.GetMouseButton(0) && gameObject.GetComponent<SpriteRenderer>().enabled == true)
         {
             Shoot();
             yield return new WaitForSeconds(1f / fireRate);

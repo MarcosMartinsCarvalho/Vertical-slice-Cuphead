@@ -1,135 +1,152 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading;
 using UnityEngine;
 
 public class Platform : MonoBehaviour
 {
-    [Header("Platform Settings")]
-    [SerializeField] private float fallSpeed = -20f; // Speed of falling
-    [SerializeField] private float idleMoveSpeed = 0.1f; // Speed of idle up-and-down movement
-    [SerializeField] private float idleMovementRange = 2f; // Range of idle up-and-down movement
-    [SerializeField] private float struggleDownAmount = 0.5f; // How far down the platform moves while struggling
-    [SerializeField] private float restoreSpeed = 5f; // Speed of restoring after falling
-    [SerializeField] private KeyCode testFallKey = KeyCode.F; // Key to manually test the fall mechanic
-    [SerializeField] private GameObject platform;
-
+    public float sinkSpeed = 1f;
+    public float resetSpeed = 1f;
+    public float sinkDelay = 1f;
+    public Transform groundCheck;
+    public LayerMask playerLayer;
+    public float groundCheckRadius = 0.5f;
+    private float x = 1;
+    [SerializeField] float xPos;
+    [SerializeField] float yPos;
+    private float y;
+    private Vector3 initialPosition;
+    private bool isSinking = false;
+    private bool isReturning = false;
+    public float fallTimer = 0;
+    private float fallHeight;
     private bool isFalling = false;
-    private bool isStruggling = false;
-    private bool isDown = false; // Tracks if the platform is currently falling
+    public bool isDown = false;
+    public float waitTimer = 0f;
+    public float riseTimer = 0f;
     private Animator animator;
-    private Vector3 originalPosition;
-    private float localTimeOffset = 0f; // Keeps track of sine wave progress for idle movement
-    private GameObject playerOnPlatform = null; // Tracks the player object standing on the platform
 
     void Start()
     {
+        initialPosition = transform.position;
+        xPos = initialPosition.x;
+        yPos = initialPosition.y;
         animator = GetComponent<Animator>();
-        originalPosition = transform.position;
     }
-
 
     void Update()
     {
-        // Check for the test fall key
-        if (Input.GetKeyDown(testFallKey))
+
+        //  CheckPlayerOnPlatform();
+
+        x += Time.deltaTime;
+        y = 0.2f * Mathf.Sin(0.7f * x + 1.57f) + yPos + fallHeight;
+
+        transform.position = new Vector3(xPos, y, 0);
+        if (isFalling == true)
         {
-            StartCoroutine(FallAndRestore());
-        }
 
-        // Handle platform behavior
-        if (isFalling) return; // Don't move if falling
-
-        if (isStruggling)
-        {
-            // Move slightly down while struggling (only once, avoid snapping)
-            transform.position = Vector3.MoveTowards(transform.position,
-                new Vector3(originalPosition.x, originalPosition.y - struggleDownAmount, originalPosition.z),
-                restoreSpeed * Time.deltaTime);
-
-            // Adjust the player's position to match the platform
-            if (playerOnPlatform != null)
+            fallHeight -= 9 * Time.deltaTime;
+            fallTimer += Time.deltaTime;
+            if (fallTimer > 1)
             {
-                playerOnPlatform.transform.position += Vector3.down * (struggleDownAmount * Time.deltaTime);
+                isFalling = false;
+                isDown = true;
+                animator.SetTrigger("Restored");
+                animator.ResetTrigger("IsFalling");
             }
         }
-        else
+        if (isDown == true)
         {
-            // Handle idle up-and-down movement
-            localTimeOffset += Time.deltaTime;
-            float sinValue = Mathf.Sin(localTimeOffset * idleMoveSpeed) * idleMovementRange; // Oscillation
-            transform.position = new Vector3(originalPosition.x, originalPosition.y + sinValue, originalPosition.z);
 
-            // Adjust the player's position to stay grounded on the platform
-            if (playerOnPlatform != null)
+            waitTimer += Time.deltaTime;
+            if (waitTimer > 4)
             {
-                playerOnPlatform.transform.position += new Vector3(0, sinValue * Time.deltaTime, 0);
+                fallHeight += 36 * Time.deltaTime;
+                riseTimer += Time.deltaTime;
             }
+
+        }
+        if (riseTimer >= 0.25f)
+        {
+            isDown = false;
+            gameObject.GetComponent<BoxCollider2D>().enabled = true;
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Check if the player is colliding with the platform
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            isStruggling = true;
-            animator.SetBool("Struggle", true);
-            playerOnPlatform = collision.gameObject; // Store the reference to the player
-        }
 
-        // Check if the platform gets hit by a fireball
-        if (collision.gameObject.CompareTag("fireBall"))
+    void OnTriggerEnter2D(Collider2D col)
+    {
+
+
+        if (col.gameObject.tag == "fireBall")
         {
-            StartCoroutine(FallAndRestore());
+
+            falling();
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            animator.SetTrigger("IsFalling");
+            animator.ResetTrigger("Restored");
         }
     }
-
-    void OnCollisionExit2D(Collision2D collision)
+    void falling()
     {
-        // Stop struggling when the player leaves the platform
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            isStruggling = false;
-            animator.SetBool("Struggle", false);
-            playerOnPlatform = null; // Clear the reference to the player
-        }
-    }
-
-    private IEnumerator FallAndRestore()
-    {
-        // Start falling
-        isDown = true; // Mark platform as falling
         isFalling = true;
-        animator.SetBool("IsFalling", true);
-        float fallStartTime = Time.time;
+        riseTimer = 0;
+        waitTimer = 0;
+        fallTimer = 0;
+    }
+    void CheckPlayerOnPlatform()
+    {
 
-        // Fall for 4 seconds
-        while (Time.time - fallStartTime < 4f)
+        bool playerOnPlatform = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, playerLayer);
+
+        if (playerOnPlatform && !isSinking && !isReturning)
         {
-            transform.position += new Vector3(0, fallSpeed * Time.deltaTime, 0);
-            if (playerOnPlatform != null)
-            {
-                playerOnPlatform.transform.position += new Vector3(0, fallSpeed * Time.deltaTime, 0); // Move player along
-            }
-            yield return null;
+            StartCoroutine(SinkPlatform());
         }
-
-        // Smoothly restore to original position
-        while (Vector3.Distance(transform.position, originalPosition) > 0.01f)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, originalPosition, restoreSpeed * Time.deltaTime);
-            yield return null;
-        }
-
-        // Ensure the platform ends at the exact original position
-        transform.position = originalPosition;
-
-        // Reset states
-        localTimeOffset = 0f; // Reset idle sine wave calculation to avoid jerking
-        isDown = false; // Mark platform as no longer falling
-        isFalling = false;
-        animator.SetBool("IsFalling", false);
     }
 
-    // Public property to check if the platform is down
-    public bool IsDown => isDown;
+    IEnumerator SinkPlatform()
+    {
+        isSinking = true;
+
+        yield return new WaitForSeconds(sinkDelay);
+
+
+        while (transform.position.y > initialPosition.y - 2f)
+        {
+
+            transform.position -= new Vector3(0, sinkSpeed * Time.deltaTime, 0);
+            yield return null;
+        }
+
+
+
+        yield return new WaitForSeconds(1f);
+
+
+        StartCoroutine(ReturnToInitialPosition());
+    }
+
+    IEnumerator ReturnToInitialPosition()
+    {
+        isReturning = true;
+
+        while (transform.position.y < initialPosition.y)
+        {
+            transform.position += new Vector3(0, resetSpeed * Time.deltaTime, 0);
+            yield return null;
+        }
+
+        transform.position = initialPosition;
+        isSinking = false;
+        isReturning = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+    }
 }
