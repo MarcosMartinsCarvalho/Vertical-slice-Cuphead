@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] private int maxHP = 3; 
-    [SerializeField] private float invincibilityDuration = 1.5f; 
-    [SerializeField] private SpriteRenderer spriteRenderer; 
-    private int currentHP; 
+    [SerializeField] private int maxHP = 3;
+    [SerializeField] private float invincibilityDuration = 1.5f;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    private int currentHP;
     public bool isInvincible = false;
     private bool TakingDamage = false;
     [SerializeField] private GameObject Health3;
@@ -17,11 +17,13 @@ public class PlayerHealth : MonoBehaviour
     public static bool isDead = false;
 
     private Animator animator;
+    private Rigidbody2D rb;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
-        currentHP = maxHP; 
+        rb = GetComponent<Rigidbody2D>();
+        currentHP = maxHP;
     }
 
     private void Update()
@@ -29,6 +31,19 @@ public class PlayerHealth : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H))
         {
             TakeDamage(1);
+        }
+
+        CheckForAirCollision();
+    }
+
+    private void CheckForAirCollision()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity);
+        if (hit.collider != null && hit.collider.CompareTag("Air"))
+        {
+            TakeDamage(1);
+            rb.velocity = new Vector2(rb.velocity.x, 10f); // Adjust the y value to control the force applied upwards
+            Debug.Log("Player hit Air and is thrown back up");
         }
     }
 
@@ -41,16 +56,12 @@ public class PlayerHealth : MonoBehaviour
         //animator.SetBool("Pain", true);
         StartCoroutine(PainAnim());
 
-
         if (currentHP <= 0)
         {
             Die();
         }
-        
 
         StartCoroutine(InvincibilityCoroutine());
-
-        
     }
 
     private IEnumerator InvincibilityCoroutine()
@@ -60,13 +71,12 @@ public class PlayerHealth : MonoBehaviour
 
         while (elapsed < invincibilityDuration)
         {
-            
             spriteRenderer.enabled = !spriteRenderer.enabled;
             yield return new WaitForSeconds(0.1f);
             elapsed += 0.1f;
         }
 
-        spriteRenderer.enabled = true; 
+        spriteRenderer.enabled = true;
         isInvincible = false;
     }
 
@@ -74,15 +84,14 @@ public class PlayerHealth : MonoBehaviour
     {
         isDead = true;
         Debug.Log("El jugador ha muerto");
-
     }
 
     private IEnumerator PainAnim()
     {
-        if (TakingDamage) 
+        if (TakingDamage)
         {
-            
-        } 
+
+        }
         else
         {
             TakingDamage = true;
@@ -92,7 +101,6 @@ public class PlayerHealth : MonoBehaviour
             animator.SetBool("Pain", false);
             TakingDamage = false;
         }
-        
     }
 
     private void UpdateHealthUI()
@@ -122,8 +130,6 @@ public class PlayerHealth : MonoBehaviour
             Health1.SetActive(false);
         }
     }
-
-
 
     public int GetCurrentHP()
     {
