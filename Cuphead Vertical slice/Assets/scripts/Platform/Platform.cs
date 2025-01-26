@@ -66,43 +66,6 @@ public class Platform : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.CompareTag("fireBall"))
-        {
-            falling();
-            GetComponent<Collider2D>().enabled = false;
-            animator.SetTrigger("IsFalling");
-            animator.ResetTrigger("Restored");
-        }
-    }
-
-    void falling()
-=======
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Check if the player is colliding with the platform
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            isStruggling = true;
-            animator.SetBool("Struggle", true);
-            playerOnPlatform = collision.gameObject; // Store the reference to the player
-        }
-
-        // Check if the platform gets hit by a fireball
-        if (collision.gameObject.CompareTag("fireBall"))
-        {
-            StartCoroutine(FallAndRestore());
-        }
-    }
-
-    void OnCollisionExit2D(Collision2D collision)
->>>>>>> Stashed changes
-    {
-=======
     void OnCollisionEnter2D(Collision2D collision)
     {
         // Check if the player is colliding with the platform
@@ -122,7 +85,6 @@ public class Platform : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
->>>>>>> Stashed changes
         // Stop struggling when the player leaves the platform
         if (collision.gameObject.CompareTag("Player"))
         {

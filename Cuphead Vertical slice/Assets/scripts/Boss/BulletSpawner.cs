@@ -1,12 +1,4 @@
 using System.Collections;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-using System.Collections.Generic;
-using System.Threading;
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 using UnityEngine;
 
 public class PlatformScript : MonoBehaviour
@@ -20,19 +12,8 @@ public class PlatformScript : MonoBehaviour
     private bool isStruggling = false;
     private bool isDown = false;  // isDown added to track if the platform is falling
     private Animator animator;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    public static int health = 75;
-    
-   
-=======
     private Vector3 originalPosition;
 
->>>>>>> Stashed changes
-=======
-    private Vector3 originalPosition;
-
->>>>>>> Stashed changes
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -41,25 +22,8 @@ public class PlatformScript : MonoBehaviour
 
     void Update()
     {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        if (health < 1)
-        {
-            
-            transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
-            transform.position -= new Vector3(0, 1 * Time.deltaTime, 0);
-            cooldown = 0;
-        }
-        cooldown +=  Time.deltaTime;
-        if (cooldown > 0.75) 
-=======
         // Handle Idle movement up and down
         if (!isFalling && !isStruggling)
->>>>>>> Stashed changes
-=======
-        // Handle Idle movement up and down
-        if (!isFalling && !isStruggling)
->>>>>>> Stashed changes
         {
             transform.position += new Vector3(0, Mathf.Sin(Time.time * idleMoveSpeed), 0);
         }
@@ -70,33 +34,6 @@ public class PlatformScript : MonoBehaviour
         // Check if the player is colliding with the platform
         if (collision.gameObject.CompareTag("Player"))
         {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            if (platform.GetComponent<Platform>().isDown == false)
-            {
-                availible.Add(platform);
-                target = availible[Random.Range(0, availible.Count)];
-            }
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        {
-            if (collision.gameObject.tag == "Bullet")
-            {
-                health -= 1;
-                Destroy(collision.gameObject);
-            }
-            if (health < 1)
-            {
-                animator.SetTrigger("Die");
-                
-            }
-        }
-    }
-
-=======
             isStruggling = true;
             animator.SetBool("Struggle", true);
         }
@@ -108,19 +45,6 @@ public class PlatformScript : MonoBehaviour
         }
     }
 
-=======
-            isStruggling = true;
-            animator.SetBool("Struggle", true);
-        }
-
-        // Check if the platform gets hit by a fireball
-        if (collision.gameObject.CompareTag("Fireball"))
-        {
-            StartCoroutine(FallAndRestore());
-        }
-    }
-
->>>>>>> Stashed changes
     void OnCollisionExit2D(Collision2D collision)
     {
         // Stop struggling when the player leaves the platform
@@ -155,8 +79,4 @@ public class PlatformScript : MonoBehaviour
 
     // Public property to access isDown
     public bool IsDown => isDown;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 }

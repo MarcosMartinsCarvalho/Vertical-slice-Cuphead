@@ -283,6 +283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   target: {fileID: 0}
   bullet: {fileID: 8166381894768313023, guid: f10c0b965bb85144d9957254a9916a99, type: 3}
   spawnplace: {fileID: 582091336}
@@ -370,11 +371,16 @@ Rigidbody2D:
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
   fallSpeed: -20
   idleMoveSpeed: 0.1
   platform: {fileID: 0}
 --- !u!1 &250437351
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -1550,6 +1556,7 @@ GameObject:
   m_Component:
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   - component: {fileID: 1155502284}
   - component: {fileID: 1155502289}
   - component: {fileID: 1155502288}
@@ -1899,6 +1906,11 @@ GameObject:
   - component: {fileID: 1520214530}
   - component: {fileID: 1520214529}
 >>>>>>> Stashed changes
+=======
+  - component: {fileID: 1520214528}
+  - component: {fileID: 1520214530}
+  - component: {fileID: 1520214529}
+>>>>>>> Stashed changes
   m_Layer: 6
   m_Name: GroundCheker (1)
   m_TagString: Ground
@@ -1921,6 +1933,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1599814743}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 --- !u!1001 &1673712867
@@ -1996,6 +2009,8 @@ PrefabInstance:
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 --- !u!61 &1520214529
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2062,6 +2077,9 @@ PlatformEffector2D:
   m_SideArc: 1
 --- !u!1 &1599814742
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -2968,8 +2986,12 @@ SceneRoots:
   - {fileID: 136346563}
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   - {fileID: 1161771041}
   - {fileID: 1673712867}
+=======
+  - {fileID: 384851255}
+>>>>>>> Stashed changes
 =======
   - {fileID: 384851255}
 >>>>>>> Stashed changes
