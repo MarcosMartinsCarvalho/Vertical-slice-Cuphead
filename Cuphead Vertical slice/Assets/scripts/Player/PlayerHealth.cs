@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -84,6 +85,13 @@ public class PlayerHealth : MonoBehaviour
     {
         isDead = true;
         Debug.Log("El jugador ha muerto");
+        StartCoroutine(LoadSceneAfterDelay(2f));
+    }
+
+    private IEnumerator LoadSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene("Title");
     }
 
     private IEnumerator PainAnim()
