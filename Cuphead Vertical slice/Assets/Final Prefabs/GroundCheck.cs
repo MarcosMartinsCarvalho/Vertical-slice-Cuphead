@@ -17,8 +17,7 @@ public class GroundCheck : MonoBehaviour
     {
         
         Vector3 targetPosition = mosquito.position + initialOffset + new Vector3(0, yOffset, 0);
-
-        
+       
         transform.position = Vector3.Lerp(transform.position, targetPosition, lerpSpeed * Time.deltaTime);
     }
 }

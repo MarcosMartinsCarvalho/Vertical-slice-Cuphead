@@ -114,7 +114,7 @@ public class Platform : MonoBehaviour
         yield return new WaitForSeconds(sinkDelay);
 
 
-        while (transform.position.y > initialPosition.y - 2f)
+        while (transform.position.y > initialPosition.y - 5f)
         {
 
             transform.position -= new Vector3(0, sinkSpeed * Time.deltaTime, 0);
@@ -144,9 +144,5 @@ public class Platform : MonoBehaviour
         isReturning = false;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-    }
+    
 }

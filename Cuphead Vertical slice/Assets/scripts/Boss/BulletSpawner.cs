@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BulletSpawner : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class BulletSpawner : MonoBehaviour
     public float cooldown;
     private Animator animator;
     public static int health = 75;
+    public static float deadMothTimer = 0;
 
 
     void Start()
@@ -28,7 +30,7 @@ public class BulletSpawner : MonoBehaviour
         {
 
             transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
-            transform.position -= new Vector3(0, 1 * Time.deltaTime, 0);
+            transform.position -= new Vector3(0, 4 * Time.deltaTime, 0);
             cooldown = 0;
         }
         cooldown += Time.deltaTime;
@@ -60,7 +62,7 @@ public class BulletSpawner : MonoBehaviour
         }
     }
 
-    void CheckAvailible()
+    public void CheckAvailible()
     {
 
         foreach (GameObject platform in allplatforms)
@@ -71,6 +73,7 @@ public class BulletSpawner : MonoBehaviour
                 target = availible[Random.Range(0, availible.Count)];
             }
         }
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -83,8 +86,11 @@ public class BulletSpawner : MonoBehaviour
             }
             if (health < 1)
             {
+                
                 animator.SetTrigger("Die");
-
+               
+                    SceneManager.LoadScene("Victory");
+                
             }
         }
     }

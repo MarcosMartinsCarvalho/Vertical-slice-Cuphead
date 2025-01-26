@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private int maxHP = 3;
     [SerializeField] private float invincibilityDuration = 1.5f;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    private int currentHP;
-    public bool isInvincible = false;
+    public static int currentHP;
+    public static bool isInvincible = false;
     private bool TakingDamage = false;
     [SerializeField] private GameObject Health3;
     [SerializeField] private GameObject Health2;
@@ -28,28 +29,41 @@ public class PlayerHealth : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            TakeDamage(1);
-        }
-
+       
         CheckForAirCollision();
+        if (isDead)
+        {
+            GetComponent<Rigidbody2D>().gravityScale = 0;
+            transform.position += new Vector3(0, 1.3f*Time.deltaTime, 0);
+        }
     }
 
     private void CheckForAirCollision()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity);
-        if (hit.collider != null && hit.collider.CompareTag("Air"))
+        
+        if (transform.position.y <= -5)
         {
-            TakeDamage(1);
-            rb.velocity = new Vector2(rb.velocity.x, 10f);
-            Debug.Log("Player hit Air and is thrown back up");
+            rb.velocity = Vector3.zero;
+            if (!isInvincible)
+            {
+
+                TakeDamage(1);
+            }
+            if (!isDead)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, 12f);
+                Debug.Log("Player hit Air and is thrown back up");
+            }
+            if (isDead && !isInvincible)
+            {
+                SceneManager.LoadScene("Defeat");
+            }
         }
     }
 
     public void TakeDamage(int damage)
     {
-        if (isInvincible || currentHP <= 0) return;
+        if (currentHP <= 0) return;
 
         currentHP -= damage;
         Debug.Log("Player HP: " + currentHP);
@@ -83,6 +97,7 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         isDead = true;
+       
         Debug.Log("El jugador ha muerto");
     }
 
@@ -134,5 +149,12 @@ public class PlayerHealth : MonoBehaviour
     public int GetCurrentHP()
     {
         return currentHP;
+    }
+    private void OnTriggerEnter2D(UnityEngine.Collider2D collision)
+    {
+        if(collision.gameObject.tag == "fireBall" && !isInvincible)
+        {
+            TakeDamage(1);
+        }
     }
 }

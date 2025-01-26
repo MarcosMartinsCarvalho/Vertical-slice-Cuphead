@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float movementSpeed = 5f;
+     private float movementSpeed = 5f;
     [SerializeField] private float jumpHeight = 5f;
     [SerializeField] private float dashSpeed = 15f;
     [SerializeField] private float dashLength = 0.3f;
@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     private int shoot = 0;
     private int IsWalkingAndShooting1 = 0;
     private int dash = 0;
+  
 
      private Animator animator; 
 
@@ -60,10 +61,12 @@ public class PlayerMovement : MonoBehaviour
         if (!isDashing)
         {
             HandleInput();
+            PlayerHealth.isInvincible = false;
             gameObject.GetComponent<SpriteRenderer>().enabled = true;
         }
         else
         {
+            PlayerHealth.isInvincible = true;
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
         }
 
@@ -94,26 +97,33 @@ public class PlayerMovement : MonoBehaviour
     private void HandleInput()
     {
         //Debug.Log(getal);
-
-        if (Input.GetKey(moveLeft))
+        
+        if (Input.GetKey(moveLeft) && !PlayerHealth.isDead)
         {
             walk = 4;
             //animator.SetBool("IsIdle", false);
 
             currentState = PlayerState.MovingLeft;
             lastDirection = -1;
+            movementSpeed = 5f;
 
             //animator.SetBool("IsWalking", true);
         }
-        else if (Input.GetKey(moveRight))
+        else if (Input.GetKey(moveRight) && !PlayerHealth.isDead)
         {
             walk = 4;
             //animator.SetBool("IsIdle", false);
 
             currentState = PlayerState.MovingRight;
             lastDirection = 1;
+            movementSpeed = 5f;
 
             //animator.SetBool("IsWalking", true);
+        }
+        else if(!Input.GetKey(moveLeft) && !Input.GetKey(moveRight))
+        {
+            movementSpeed = 0f;
+            
         }
         else if (isGrounded && !isDashing)
         {
@@ -124,6 +134,7 @@ public class PlayerMovement : MonoBehaviour
             //animator.SetBool("IsDashing", false);
 
             currentState = PlayerState.Idle;
+            
 
             //animator.SetBool("IsIdle", true);
         }
@@ -138,7 +149,7 @@ public class PlayerMovement : MonoBehaviour
             //animator.SetBool("IsJumping", true);
         }
 
-        if (Input.GetKeyDown(dashKey) && !isDashing)
+        if (Input.GetKeyDown(dashKey) && !isDashing && !PlayerHealth.isDead)
         {
             dash = 8;
             //animator.SetBool("IsIdle", false);
@@ -316,6 +327,7 @@ public class PlayerMovement : MonoBehaviour
                     break;
 
                 case PlayerState.Idle:
+                    IsIdle = true;
                     rb.velocity = new Vector2(0, rb.velocity.y);
                     break;
             }

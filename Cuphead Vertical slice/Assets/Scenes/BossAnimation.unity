@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 136346565}
   - component: {fileID: 136346566}
   m_Layer: 0
-  m_Name: sprite_sheet_0
+  m_Name: FunnyBossMoth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

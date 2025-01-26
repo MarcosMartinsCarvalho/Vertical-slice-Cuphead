@@ -13,6 +13,7 @@ public class PlayerShoot : MonoBehaviour
 
 
     public static bool isShooting = false;
+     
 
     [SerializeField] Animator ParticleAnimation; // Reference to the Animator component
 
@@ -24,7 +25,7 @@ public class PlayerShoot : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !isShooting)
+        if (Input.GetMouseButtonDown(0) && !isShooting && !PlayerHealth.isDead)
         {
             StartCoroutine(ShootCoroutine());
         }
