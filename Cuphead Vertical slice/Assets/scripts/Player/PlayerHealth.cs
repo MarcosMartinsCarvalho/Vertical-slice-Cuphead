@@ -42,7 +42,7 @@ public class PlayerHealth : MonoBehaviour
         if (hit.collider != null && hit.collider.CompareTag("Air"))
         {
             TakeDamage(1);
-            rb.velocity = new Vector2(rb.velocity.x, 10f); // Adjust the y value to control the force applied upwards
+            rb.velocity = new Vector2(rb.velocity.x, 10f);
             Debug.Log("Player hit Air and is thrown back up");
         }
     }
