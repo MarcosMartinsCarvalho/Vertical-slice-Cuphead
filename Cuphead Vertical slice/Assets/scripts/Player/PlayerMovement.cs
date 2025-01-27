@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-     private float movementSpeed = 5f;
+    [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float jumpHeight = 5f;
     [SerializeField] private float dashSpeed = 15f;
     [SerializeField] private float dashLength = 0.3f;
@@ -23,9 +23,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool RunAndGun = false;
     [SerializeField] private bool IsDashing = false;
     [Space]
-    [SerializeField] private float groundCheckDelay = 0.1f; // Adjustable delay
-    private Coroutine groundCheckCoroutine;
-    private bool isGroundedDelayed = false; // Stable ground state for logic
+    
 
 
 
@@ -37,10 +35,8 @@ public class PlayerMovement : MonoBehaviour
     private int shoot = 0;
     private int IsWalkingAndShooting1 = 0;
     private int dash = 0;
-  
 
-     private Animator animator; 
-
+    private Animator animator; 
 
 
     public enum PlayerState { Idle, MovingLeft, MovingRight, Jumping, Dashing }
@@ -61,12 +57,10 @@ public class PlayerMovement : MonoBehaviour
         if (!isDashing)
         {
             HandleInput();
-            PlayerHealth.isInvincible = false;
             gameObject.GetComponent<SpriteRenderer>().enabled = true;
         }
         else
         {
-            PlayerHealth.isInvincible = true;
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
         }
 
@@ -75,55 +69,31 @@ public class PlayerMovement : MonoBehaviour
         getal = walk + jump + shoot;
 
         // dash = 8, walk is 4, jump is 2, shoot is 1
-        UpdateGroundedState();
     }
-    private void UpdateGroundedState()
-    {
-        if (isGrounded != isGroundedDelayed)
-        {
-            if (groundCheckCoroutine != null)
-            {
-                StopCoroutine(groundCheckCoroutine);
-            }
-            groundCheckCoroutine = StartCoroutine(GroundCheckDelayCoroutine());
-        }
-    }
-    private IEnumerator GroundCheckDelayCoroutine()
-    {
-        yield return new WaitForSeconds(groundCheckDelay);
-        isGroundedDelayed = isGrounded; // Apply stable ground state after delay
-        animator.SetBool("isGrounded", isGroundedDelayed);
-    }
+
     private void HandleInput()
     {
-        //Debug.Log(getal);
-        
-        if (Input.GetKey(moveLeft) && !PlayerHealth.isDead)
+        Debug.Log(getal);
+
+        if (Input.GetKey(moveLeft))
         {
             walk = 4;
             //animator.SetBool("IsIdle", false);
 
             currentState = PlayerState.MovingLeft;
             lastDirection = -1;
-            movementSpeed = 5f;
 
             //animator.SetBool("IsWalking", true);
         }
-        else if (Input.GetKey(moveRight) && !PlayerHealth.isDead)
+        else if (Input.GetKey(moveRight))
         {
             walk = 4;
             //animator.SetBool("IsIdle", false);
 
             currentState = PlayerState.MovingRight;
             lastDirection = 1;
-            movementSpeed = 5f;
 
             //animator.SetBool("IsWalking", true);
-        }
-        else if(!Input.GetKey(moveLeft) && !Input.GetKey(moveRight))
-        {
-            movementSpeed = 0f;
-            
         }
         else if (isGrounded && !isDashing)
         {
@@ -134,7 +104,6 @@ public class PlayerMovement : MonoBehaviour
             //animator.SetBool("IsDashing", false);
 
             currentState = PlayerState.Idle;
-            
 
             //animator.SetBool("IsIdle", true);
         }
@@ -149,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
             //animator.SetBool("IsJumping", true);
         }
 
-        if (Input.GetKeyDown(dashKey) && !isDashing && !PlayerHealth.isDead)
+        if (Input.GetKeyDown(dashKey) && !isDashing)
         {
             dash = 8;
             //animator.SetBool("IsIdle", false);
@@ -168,14 +137,6 @@ public class PlayerMovement : MonoBehaviour
             shoot = 0;
         }
 
-        if (PlayerHealth.isDead)
-        {
-            walk = -1;
-            jump = 0;
-            shoot = 0;
-            dash = 0;
-        }
-
         if (isGrounded)
         {
             animator.SetBool("isGrounded", true);
@@ -192,7 +153,6 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", true);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
         }
 
         if (getal == 0)
@@ -203,7 +163,6 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", false);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
         }
         else if (getal == 4)
         {
@@ -213,7 +172,6 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", false);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
         }
         else if (getal == 2)
         {
@@ -223,7 +181,6 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", false);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
         }
         else if (getal == 8)
         {
@@ -233,7 +190,6 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsJumping", false);
             animator.SetBool("IsShooting", false);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
         }
         else if (getal == 6)
         {
@@ -243,7 +199,6 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", false);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
         }
         else if (getal == 1)
         {
@@ -253,7 +208,6 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", true);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
         }
         else if (getal == 3)
         {
@@ -263,7 +217,6 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", true);
             animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
         }
         else if (getal == 5)
         {
@@ -285,7 +238,6 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsShooting", false);
             animator.SetBool("RunAndGun", false);
         }
-
 
 
         switch (lastDirection)
@@ -327,7 +279,6 @@ public class PlayerMovement : MonoBehaviour
                     break;
 
                 case PlayerState.Idle:
-                    IsIdle = true;
                     rb.velocity = new Vector2(0, rb.velocity.y);
                     break;
             }
