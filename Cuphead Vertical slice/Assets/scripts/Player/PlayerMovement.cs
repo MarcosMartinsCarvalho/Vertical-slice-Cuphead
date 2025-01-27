@@ -226,17 +226,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsDashing", false);
             animator.SetBool("IsShooting", false);
             animator.SetBool("RunAndGun", true);
-            animator.SetBool("isDead", false);
-
-        }
-        else if(getal == -1) {
-            animator.SetBool("isDead", true);
-            animator.SetBool("IsJumping", false);
-            animator.SetBool("IsIdle", false);
-            animator.SetBool("IsWalking", false);
-            animator.SetBool("IsDashing", false);
-            animator.SetBool("IsShooting", false);
-            animator.SetBool("RunAndGun", false);
+            
         }
 
 
