@@ -97,55 +97,35 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(moveLeft))
         {
-            walk = 4;
-            //animator.SetBool("IsIdle", false);
-
+            walk = 4;          
             currentState = PlayerState.MovingLeft;
-            lastDirection = -1;
-
-            //animator.SetBool("IsWalking", true);
+            lastDirection = -1;            
         }
         else if (Input.GetKey(moveRight))
         {
-            walk = 4;
-            //animator.SetBool("IsIdle", false);
-
+            walk = 4;           
             currentState = PlayerState.MovingRight;
-            lastDirection = 1;
-
-            //animator.SetBool("IsWalking", true);
+            lastDirection = 1;            
         }
         else if (isGrounded && !isDashing)
         {
             walk = 0;
-            jump = 0;
-            //animator.SetBool("IsWalking", false);
-            //animator.SetBool("IsJumping", false);
-            //animator.SetBool("IsDashing", false);
-
-            currentState = PlayerState.Idle;
-
-            //animator.SetBool("IsIdle", true);
+            jump = 0;           
+            currentState = PlayerState.Idle;           
         }
 
         if (Input.GetKeyDown(jumpKey) && isGrounded)
         {
-            jump = 2;
-            //animator.SetBool("IsIdle", false);
-
+            jump = 2;           
             currentState = PlayerState.Jumping;
-
-            //animator.SetBool("IsJumping", true);
+           
         }
 
         if (Input.GetKeyDown(dashKey) && !isDashing)
         {
             dash = 8;
-            //animator.SetBool("IsIdle", false);
-
             currentState = PlayerState.Dashing;
 
-            //animator.SetBool("IsDashing", true);
         }
 
         if (PlayerShoot.isShooting)
