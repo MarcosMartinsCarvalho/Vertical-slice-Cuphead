@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Defeat.unity
     guid: 954e7fbce2752b34683ee8d84fb0c2c2
   - enabled: 1
-    path: Assets/Scenes/FInalGame.unity
+    path: Assets/Scenes/FInalGame2.unity
     guid: 92f954b69d44ae543b659cedc0e7fdfe
   - enabled: 1
     path: Assets/Scenes/Victory.unity
