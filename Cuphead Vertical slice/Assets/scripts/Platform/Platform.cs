@@ -1,113 +1,148 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading;
 using UnityEngine;
 
 public class Platform : MonoBehaviour
 {
-    public enum PlatformState
-    {
-        Idle,
-        Falling,
-        Struggling
-    }
-
-    [SerializeField] private PlatformState currentState;
-    [SerializeField] private float moveSpeed = 0.5f;
-    [SerializeField] private float moveDistance = 2f;
-    [SerializeField] private float struggleDip = 0.5f;
-    [SerializeField] private float fallTime = 2f;
-    [SerializeField] private float waitTimeAfterStruggling = 2f; 
+    public float sinkSpeed = 1f;
+    public float resetSpeed = 1f;
+    public float sinkDelay = 1f;
+    public Transform groundCheck;
+    public LayerMask playerLayer;
+    public float groundCheckRadius = 0.5f;
+    private float x = 1;
+    [SerializeField] float xPos;
+    [SerializeField] float yPos;
+    private float y;
     private Vector3 initialPosition;
-    [SerializeField] private bool isPlayerOnPlatform;
-    private bool isFalling;
-    [SerializeField] private bool isStruggling;
-
+    private bool isSinking = false;
+    private bool isReturning = false;
+    public float fallTimer = 0;
+    private float fallHeight;
+    private bool isFalling = false;
     public bool isDown = false;
+    public float waitTimer = 0f;
+    public float riseTimer = 0f;
+    private Animator animator;
 
-    private void Start()
+    void Start()
     {
         initialPosition = transform.position;
-        StartCoroutine(PlatformStates());
+        xPos = initialPosition.x;
+        yPos = initialPosition.y;
+        animator = GetComponent<Animator>();
     }
 
-    private IEnumerator PlatformStates()
+    void Update()
     {
-        while (true)
+
+        //  CheckPlayerOnPlatform();
+
+        x += Time.deltaTime;
+        y = 0.2f * Mathf.Sin(0.7f * x + 1.57f) + yPos + fallHeight;
+
+        transform.position = new Vector3(xPos, y, 0);
+        if (isFalling == true)
         {
-            switch (currentState)
+
+            fallHeight -= 9 * Time.deltaTime;
+            fallTimer += Time.deltaTime;
+            if (fallTimer > 1)
             {
-                case PlatformState.Idle:
-                    float moveTime = Mathf.PingPong(Time.time * moveSpeed, moveDistance);
-                    transform.position = initialPosition + Vector3.up * moveTime;
-                    yield return null;
-                    break;
-
-                case PlatformState.Falling:
-                    if (!isFalling)
-                    {
-                        isFalling = true;
-                        isDown = true; 
-                        float timer = 0f;
-                        Vector3 fallPosition = transform.position - Vector3.up * 5f; 
-
-                        while (timer < fallTime)
-                        {
-                            transform.position = Vector3.Lerp(transform.position, fallPosition, timer / fallTime);
-                            timer += Time.deltaTime;
-                            yield return null;
-                        }
-
-                        transform.position = fallPosition;
-                        yield return new WaitForSeconds(fallTime); 
-
-                        timer = 0f;
-                        while (timer < fallTime)
-                        {
-                            transform.position = Vector3.Lerp(transform.position, initialPosition, timer / fallTime);
-                            timer += Time.deltaTime;
-                            yield return null;
-                        }
-
-                        transform.position = initialPosition;
-                        isDown = false; 
-                        isFalling = false;
-                    }
-                    yield return null;
-                    break;
-
-                case PlatformState.Struggling:
-                    
-                    
-                    yield return null;
-                    break;
+                isFalling = false;
+                isDown = true;
+                animator.SetTrigger("Restored");
+                animator.ResetTrigger("IsFalling");
             }
         }
-    }
-
-    public void ChangeState(PlatformState newState)
-    {
-        currentState = newState;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
+        if (isDown == true)
         {
-            
-            isStruggling = true;
-            transform.position = new Vector3(transform.position.x, transform.position.y - struggleDip, transform.position.z);
+
+            waitTimer += Time.deltaTime;
+            if (waitTimer > 4)
+            {
+                fallHeight += 36 * Time.deltaTime;
+                riseTimer += Time.deltaTime;
+            }
+
         }
-
-        if (collision.gameObject.CompareTag("fireBall"))
+        if (riseTimer >= 0.25f)
         {
-            currentState = PlatformState.Falling;
+            isDown = false;
+            gameObject.GetComponent<BoxCollider2D>().enabled = true;
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+
+    void OnTriggerEnter2D(Collider2D col)
     {
-        if (collision.gameObject.CompareTag("Player"))
+
+
+        if (col.gameObject.tag == "fireBall")
         {
-            isPlayerOnPlatform = false;
+
+            falling();
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            animator.SetTrigger("IsFalling");
+            animator.ResetTrigger("Restored");
         }
     }
+    void falling()
+    {
+        isFalling = true;
+        riseTimer = 0;
+        waitTimer = 0;
+        fallTimer = 0;
+    }
+    void CheckPlayerOnPlatform()
+    {
+
+        bool playerOnPlatform = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, playerLayer);
+
+        if (playerOnPlatform && !isSinking && !isReturning)
+        {
+            StartCoroutine(SinkPlatform());
+        }
+    }
+
+    IEnumerator SinkPlatform()
+    {
+        isSinking = true;
+
+        yield return new WaitForSeconds(sinkDelay);
+
+
+        while (transform.position.y > initialPosition.y - 5f)
+        {
+
+            transform.position -= new Vector3(0, sinkSpeed * Time.deltaTime, 0);
+            yield return null;
+        }
+
+
+
+        yield return new WaitForSeconds(1f);
+
+
+        StartCoroutine(ReturnToInitialPosition());
+    }
+
+    IEnumerator ReturnToInitialPosition()
+    {
+        isReturning = true;
+
+        while (transform.position.y < initialPosition.y)
+        {
+            transform.position += new Vector3(0, resetSpeed * Time.deltaTime, 0);
+            yield return null;
+        }
+
+        transform.position = initialPosition;
+        isSinking = false;
+        isReturning = false;
+    }
+
+
 }

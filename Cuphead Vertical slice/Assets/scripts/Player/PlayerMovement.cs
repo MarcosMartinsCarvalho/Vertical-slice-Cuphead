@@ -78,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(moveLeft))
         {
             walk = 4;
+            movementSpeed = 5f;
             //animator.SetBool("IsIdle", false);
 
             currentState = PlayerState.MovingLeft;
@@ -88,12 +89,17 @@ public class PlayerMovement : MonoBehaviour
         else if (Input.GetKey(moveRight))
         {
             walk = 4;
+            movementSpeed = 5f;
             //animator.SetBool("IsIdle", false);
 
             currentState = PlayerState.MovingRight;
             lastDirection = 1;
 
             //animator.SetBool("IsWalking", true);
+        }
+        else if (!Input.GetKey(moveRight) && (!Input.GetKey(moveLeft)))
+        {
+            movementSpeed = 0;
         }
         else if (isGrounded && !isDashing)
         {
