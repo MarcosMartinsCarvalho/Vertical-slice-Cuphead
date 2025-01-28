@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool RunAndGun = false;
     [SerializeField] private bool IsDashing = false;
     [Space]
-    
+    [SerializeField] private float yOffset = 0.5f;
 
 
 
@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
 
     {
-        
+        CheckIfGrounded();
         if (!isDashing)
         {
             HandleInput();
@@ -342,5 +342,27 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void CheckIfGrounded()
+    {
+        // Calculate the position below the player using the yOffset
+        Vector2 groundCheckPosition = new Vector2(transform.position.x, transform.position.y - yOffset);
 
+        // Perform overlap check for grounding (detecting if touching the ground)
+        isGrounded = Physics2D.OverlapCircle(groundCheckPosition, 0.5f, LayerMask.GetMask("Ground"));
+
+        if (isGrounded)
+        {
+            animator.SetBool("isGrounded", true);
+        }
+        else
+        {
+            animator.SetBool("isGrounded", false);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(new Vector2(transform.position.x, transform.position.y - yOffset), 0.5f); // Adjust as needed
+    }
 }
