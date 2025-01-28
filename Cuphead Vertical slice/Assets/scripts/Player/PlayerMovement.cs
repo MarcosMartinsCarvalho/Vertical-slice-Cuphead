@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float movementSpeed = 5f;
-    [SerializeField] private float jumpHeight = 5f;
+    [SerializeField] public static float movementSpeed = 5f;
+    [SerializeField] private float jumpHeight = 8f;
     [SerializeField] private float dashSpeed = 15f;
     [SerializeField] private float dashLength = 0.3f;
     [SerializeField] private bool isGrounded = false;
@@ -100,6 +100,8 @@ public class PlayerMovement : MonoBehaviour
         else if (!Input.GetKey(moveRight) && (!Input.GetKey(moveLeft)))
         {
             movementSpeed = 0;
+            
+            walk = 0;
         }
         else if (isGrounded && !isDashing)
         {

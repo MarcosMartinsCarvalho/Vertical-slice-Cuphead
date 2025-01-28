@@ -31,6 +31,10 @@ public class BulletSpawner : MonoBehaviour
 
             transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
             transform.position -= new Vector3(0, 4 * Time.deltaTime, 0);
+            if (transform.position.y < -4)
+            {
+                SceneManager.LoadScene("Victory");
+            }
             cooldown = 0;
         }
         cooldown += Time.deltaTime;
@@ -89,7 +93,7 @@ public class BulletSpawner : MonoBehaviour
                 
                 animator.SetTrigger("Die");
                
-                    SceneManager.LoadScene("Victory");
+                    
                 
             }
         }

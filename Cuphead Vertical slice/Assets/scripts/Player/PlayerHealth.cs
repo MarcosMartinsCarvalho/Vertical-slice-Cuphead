@@ -35,6 +35,12 @@ public class PlayerHealth : MonoBehaviour
         {
             GetComponent<Rigidbody2D>().gravityScale = 0;
             transform.position += new Vector3(0, 1.3f*Time.deltaTime, 0);
+            animator.SetTrigger("Floating");
+            PlayerMovement.movementSpeed = 0;
+            if (transform.position.y > 2.5)
+            {
+                SceneManager.LoadScene("Defeat");
+            }
         }
     }
 
@@ -51,13 +57,12 @@ public class PlayerHealth : MonoBehaviour
             }
             if (!isDead)
             {
-                rb.velocity = new Vector2(rb.velocity.x, 12f);
+                rb.velocity = new Vector2(rb.velocity.x, 24f);
                 Debug.Log("Player hit Air and is thrown back up");
             }
-            if (isDead && !isInvincible)
-            {
-                SceneManager.LoadScene("Defeat");
-            }
+            
+                
+            
         }
     }
 

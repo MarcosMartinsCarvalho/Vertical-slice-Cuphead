@@ -73,6 +73,11 @@ public class Platform : MonoBehaviour
             isDown = false;
             gameObject.GetComponent<BoxCollider2D>().enabled = true;
         }
+        if (yPos + fallHeight  > initialPosition.y)
+        {
+            fallHeight = 0;
+            yPos = initialPosition.y;
+        }
     }
 
 

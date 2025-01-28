@@ -22,7 +22,7 @@ public class ScreenSwapper : MonoBehaviour
             BulletSpawner.health = 75;
             PlayerHealth.currentHP = 3;
             PlayerHealth.isDead = false;
-            SceneManager.LoadScene("FinalGame");
+            SceneManager.LoadScene("FinalGame2");
         }
     }
 }
