@@ -1,405 +1,200 @@
 using System.Collections;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-     private float movementSpeed = 5f;
+    [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float jumpHeight = 5f;
     [SerializeField] private float dashSpeed = 15f;
     [SerializeField] private float dashLength = 0.3f;
-    [SerializeField] private bool isGrounded = false;
+    [SerializeField] private bool isGrounded;
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private bool canTakeDamage = true;
     [Space]
     [SerializeField] private KeyCode moveLeft = KeyCode.A;
     [SerializeField] private KeyCode moveRight = KeyCode.D;
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
     [SerializeField] private KeyCode dashKey = KeyCode.LeftShift;
     [Space]
-    [SerializeField] private bool IsIdle = false;
-    [SerializeField] private bool IsWalking = false;
-    [SerializeField] private bool IsJumping = false;
-    [SerializeField] private bool RunAndGun = false;
-    [SerializeField] private bool IsDashing = false;
-    [Space]
-    [SerializeField] private float groundCheckDelay = 0.1f; // Adjustable delay
-    private Coroutine groundCheckCoroutine;
-    private bool isGroundedDelayed = false; // Stable ground state for logic
-
-
-
-
-
-    private int getal;
-    private int walk = 0;
-    private int jump = 0;
-    private int shoot = 0;
-    private int IsWalkingAndShooting1 = 0;
-    private int dash = 0;
-  
-
-     private Animator animator; 
-
-
+    [SerializeField] private float coyoteTime = 0.08f;
 
     public enum PlayerState { Idle, MovingLeft, MovingRight, Jumping, Dashing }
     public PlayerState currentState = PlayerState.Idle;
 
-    private bool isDashing = false;
-    private int lastDirection = 0;
+    private readonly HashSet<int> groundColliders = new HashSet<int>();
+    private float groundedTimer;
+    private bool isDashing;
+    private int lastDirection = 1;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
 
-    void Start()
+    private void Start()
     {
-        animator = GetComponent<Animator>(); 
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (rb == null)
+        {
+            rb = GetComponent<Rigidbody2D>();
+        }
     }
 
-    void Update()
-
+    private void Update()
     {
-        
-        if (!isDashing)
-        {
-            HandleInput();
-            PlayerHealth.isInvincible = false;
-            gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        }
-        else
-        {
-            PlayerHealth.isInvincible = true;
-            gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        }
-
-        HandleMovement();
-
-        getal = walk + jump + shoot;
-
-        // dash = 8, walk is 4, jump is 2, shoot is 1
-        UpdateGroundedState();
-    }
-    private void UpdateGroundedState()
-    {
-        if (isGrounded != isGroundedDelayed)
-        {
-            if (groundCheckCoroutine != null)
-            {
-                StopCoroutine(groundCheckCoroutine);
-            }
-            groundCheckCoroutine = StartCoroutine(GroundCheckDelayCoroutine());
-        }
-    }
-    private IEnumerator GroundCheckDelayCoroutine()
-    {
-        yield return new WaitForSeconds(groundCheckDelay);
-        isGroundedDelayed = isGrounded; // Apply stable ground state after delay
-        animator.SetBool("isGrounded", isGroundedDelayed);
-    }
-    private void HandleInput()
-    {
-        //Debug.Log(getal);
-        
-        if (Input.GetKey(moveLeft) && !PlayerHealth.isDead)
-        {
-            walk = 4;
-            //animator.SetBool("IsIdle", false);
-
-            currentState = PlayerState.MovingLeft;
-            lastDirection = -1;
-            movementSpeed = 5f;
-
-            //animator.SetBool("IsWalking", true);
-        }
-        else if (Input.GetKey(moveRight) && !PlayerHealth.isDead)
-        {
-            walk = 4;
-            //animator.SetBool("IsIdle", false);
-
-            currentState = PlayerState.MovingRight;
-            lastDirection = 1;
-            movementSpeed = 5f;
-
-            //animator.SetBool("IsWalking", true);
-        }
-        else if(!Input.GetKey(moveLeft) && !Input.GetKey(moveRight))
-        {
-            movementSpeed = 0f;
-            
-        }
-        else if (isGrounded && !isDashing)
-        {
-            walk = 0;
-            jump = 0;
-            //animator.SetBool("IsWalking", false);
-            //animator.SetBool("IsJumping", false);
-            //animator.SetBool("IsDashing", false);
-
-            currentState = PlayerState.Idle;
-            
-
-            //animator.SetBool("IsIdle", true);
-        }
-
-        if (Input.GetKeyDown(jumpKey) && isGrounded)
-        {
-            jump = 2;
-            //animator.SetBool("IsIdle", false);
-
-            currentState = PlayerState.Jumping;
-
-            //animator.SetBool("IsJumping", true);
-        }
-
-        if (Input.GetKeyDown(dashKey) && !isDashing && !PlayerHealth.isDead)
-        {
-            dash = 8;
-            //animator.SetBool("IsIdle", false);
-
-            currentState = PlayerState.Dashing;
-
-            //animator.SetBool("IsDashing", true);
-        }
-
-        if (PlayerShoot.isShooting)
-        {
-            shoot = 1;
-        }
-        else
-        {
-            shoot = 0;
-        }
-
         if (PlayerHealth.isDead)
         {
-            walk = -1;
-            jump = 0;
-            shoot = 0;
-            dash = 0;
+            currentState = PlayerState.Idle;
+            ApplyAnimationState();
+            return;
         }
 
-        if (isGrounded)
+        HandleInput();
+        HandleMovement();
+        ApplyAnimationState();
+    }
+
+    private void FixedUpdate()
+    {
+        if (groundColliders.Count > 0)
         {
-            animator.SetBool("isGrounded", true);
+            groundedTimer = coyoteTime;
         }
         else
         {
-            animator.SetBool("isGrounded", false);
-        }
-        if (getal == 7)
-        {
-            animator.SetBool("IsIdle", false);
-            animator.SetBool("IsWalking", true);
-            animator.SetBool("IsJumping", true);
-            animator.SetBool("IsDashing", false);
-            animator.SetBool("IsShooting", true);
-            animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
+            groundedTimer -= Time.fixedDeltaTime;
         }
 
-        if (getal == 0)
-        {
-            animator.SetBool("IsIdle", true);
-            animator.SetBool("IsWalking", false);
-            animator.SetBool("IsJumping", false);
-            animator.SetBool("IsDashing", false);
-            animator.SetBool("IsShooting", false);
-            animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
-        }
-        else if (getal == 4)
-        {
-            animator.SetBool("IsWalking", true);
-            animator.SetBool("IsIdle", false);
-            animator.SetBool("IsJumping", false);
-            animator.SetBool("IsDashing", false);
-            animator.SetBool("IsShooting", false);
-            animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
-        }
-        else if (getal == 2)
-        {
-            animator.SetBool("IsJumping", true);
-            animator.SetBool("IsIdle", false);
-            animator.SetBool("IsWalking", false);
-            animator.SetBool("IsDashing", false);
-            animator.SetBool("IsShooting", false);
-            animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
-        }
-        else if (getal == 8)
-        {
-            animator.SetBool("IsDashing", true);
-            animator.SetBool("IsIdle", false);
-            animator.SetBool("IsWalking", false);
-            animator.SetBool("IsJumping", false);
-            animator.SetBool("IsShooting", false);
-            animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
-        }
-        else if (getal == 6)
-        {
-            animator.SetBool("IsJumping", true);
-            animator.SetBool("IsIdle", false);
-            animator.SetBool("IsWalking", true);
-            animator.SetBool("IsDashing", false);
-            animator.SetBool("IsShooting", false);
-            animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
-        }
-        else if (getal == 1)
-        {
-            animator.SetBool("IsJumping", false);
-            animator.SetBool("IsIdle", false);
-            animator.SetBool("IsWalking", false);
-            animator.SetBool("IsDashing", false);
-            animator.SetBool("IsShooting", true);
-            animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
-        }
-        else if (getal == 3)
-        {
-            animator.SetBool("IsJumping", true);
-            animator.SetBool("IsIdle", false);
-            animator.SetBool("IsWalking", false);
-            animator.SetBool("IsDashing", false);
-            animator.SetBool("IsShooting", true);
-            animator.SetBool("RunAndGun", false);
-            animator.SetBool("isDead", false);
-        }
-        else if (getal == 5)
-        {
-            animator.SetBool("IsJumping", false);
-            animator.SetBool("IsIdle", false);
-            animator.SetBool("IsWalking", false);
-            animator.SetBool("IsDashing", false);
-            animator.SetBool("IsShooting", false);
-            animator.SetBool("RunAndGun", true);
-            animator.SetBool("isDead", false);
+        isGrounded = groundedTimer > 0f;
+    }
 
+    private void HandleInput()
+    {
+        bool movingLeft = Input.GetKey(moveLeft) && !Input.GetKey(moveRight);
+        bool movingRight = Input.GetKey(moveRight) && !Input.GetKey(moveLeft);
+
+        if (movingLeft)
+        {
+            currentState = PlayerState.MovingLeft;
+            lastDirection = -1;
         }
-        else if(getal == -1) {
-            animator.SetBool("isDead", true);
-            animator.SetBool("IsJumping", false);
-            animator.SetBool("IsIdle", false);
-            animator.SetBool("IsWalking", false);
-            animator.SetBool("IsDashing", false);
-            animator.SetBool("IsShooting", false);
-            animator.SetBool("RunAndGun", false);
+        else if (movingRight)
+        {
+            currentState = PlayerState.MovingRight;
+            lastDirection = 1;
+        }
+        else if (!isDashing && isGrounded)
+        {
+            currentState = PlayerState.Idle;
         }
 
-
-
-        switch (lastDirection)
+        if (Input.GetKeyDown(jumpKey) && isGrounded && !isDashing)
         {
-            case -1:
-                
-                GetComponent<SpriteRenderer>().flipX = true;
-                break;
-
-            case 1:
-                
-                GetComponent<SpriteRenderer>().flipX = false;
-                break;
+            currentState = PlayerState.Jumping;
         }
+
+        if (Input.GetKeyDown(dashKey) && !isDashing)
+        {
+            currentState = PlayerState.Dashing;
+        }
+
+        spriteRenderer.flipX = lastDirection < 0;
     }
 
     private void HandleMovement()
     {
-        if (!isDashing)
+        if (isDashing)
         {
-            switch (currentState)
-            {
-                case PlayerState.MovingLeft:
-                    rb.velocity = new Vector2(-movementSpeed, rb.velocity.y);
-                    break;
+            return;
+        }
 
-                case PlayerState.MovingRight:
-                    rb.velocity = new Vector2(movementSpeed, rb.velocity.y);
-                    break;
-
-                case PlayerState.Jumping:
-                    rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
-                    isGrounded = false;
-                    currentState = PlayerState.Idle; 
-                    break;
-
-                case PlayerState.Dashing:
-                    StartCoroutine(PerformDash());
-                    break;
-
-                case PlayerState.Idle:
-                    IsIdle = true;
-                    rb.velocity = new Vector2(0, rb.velocity.y);
-                    break;
-            }
+        switch (currentState)
+        {
+            case PlayerState.MovingLeft:
+                rb.velocity = new Vector2(-movementSpeed, rb.velocity.y);
+                break;
+            case PlayerState.MovingRight:
+                rb.velocity = new Vector2(movementSpeed, rb.velocity.y);
+                break;
+            case PlayerState.Jumping:
+                rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
+                isGrounded = false;
+                currentState = PlayerState.Idle;
+                break;
+            case PlayerState.Dashing:
+                currentState = PlayerState.Idle;
+                StartCoroutine(PerformDash());
+                break;
+            case PlayerState.Idle:
+                rb.velocity = new Vector2(0, rb.velocity.y);
+                break;
         }
     }
 
     private IEnumerator PerformDash()
     {
         isDashing = true;
-        canTakeDamage = false;
-
-       
         rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
 
-        
-        float dashDirection = lastDirection;
-        if (dashDirection != 0)
-        {
-            rb.velocity = new Vector2(dashDirection * dashSpeed, 0);
-        }
+        float dashDirection = lastDirection == 0 ? 1f : lastDirection;
+        rb.velocity = new Vector2(dashDirection * dashSpeed, 0);
 
         yield return new WaitForSeconds(dashLength);
 
-        
-        rb.velocity = new Vector2(0, rb.velocity.y);
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-
+        rb.velocity = new Vector2(0, rb.velocity.y);
         isDashing = false;
-        canTakeDamage = true;
+    }
 
+    private void ApplyAnimationState()
+    {
+        bool dead = PlayerHealth.isDead;
+        bool shooting = PlayerShoot.isShooting && !dead;
+        bool groundedForAnimation = isGrounded;
+        bool walking = Mathf.Abs(rb.velocity.x) > 0.05f && groundedForAnimation && !isDashing;
+        bool jumping = !groundedForAnimation && !isDashing && !dead;
+        bool runAndGun = walking && shooting;
+        bool idle = groundedForAnimation && !walking && !shooting && !isDashing && !dead;
 
-        if (isGrounded)
+        animator.SetBool("isGrounded", groundedForAnimation);
+        animator.SetBool("IsIdle", idle);
+        animator.SetBool("IsWalking", walking);
+        animator.SetBool("IsJumping", jumping);
+        animator.SetBool("IsDashing", isDashing);
+        animator.SetBool("IsShooting", shooting && !runAndGun);
+        animator.SetBool("RunAndGun", runAndGun);
+        animator.SetBool("isDead", dead);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!collision.gameObject.CompareTag("Ground"))
         {
-            currentState = PlayerState.Idle;
+            return;
         }
-        else if (Input.GetKey(moveLeft))
-        {
-            currentState = PlayerState.MovingLeft;
-        }
-        else if (Input.GetKey(moveRight))
-        {
-            currentState = PlayerState.MovingRight;
-        }
-        else
+
+        groundColliders.Add(collision.collider.GetInstanceID());
+        groundedTimer = coyoteTime;
+        isGrounded = true;
+        if (!isDashing)
         {
             currentState = PlayerState.Idle;
         }
     }
 
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        
         if (collision.gameObject.CompareTag("Ground"))
         {
+            groundColliders.Add(collision.collider.GetInstanceID());
+            groundedTimer = coyoteTime;
             isGrounded = true;
-            if (!isDashing)
-            {
-                currentState = PlayerState.Idle;
-            }
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        
         if (collision.gameObject.CompareTag("Ground"))
         {
-
-            isGrounded = false;
+            groundColliders.Remove(collision.collider.GetInstanceID());
         }
     }
-
-
 }
